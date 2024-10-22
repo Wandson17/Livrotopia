@@ -1,0 +1,109 @@
+openapi: '3.0.1'
+info:
+  title: Livrotopia - Adicionar Livros
+  description:
+    Serviço de acesso exclusivo para admins do Livrotopia, permitindo a adição de novos livros ao catálogo de vendas no site.
+  version: '0.1'
+servers:
+  - url: http://{host}:{porta}/api
+    variables:
+      host:
+        default: localhost
+      porta:
+        default: '8000'
+
+paths:
+  /livros:
+    get:
+      summary: Listar livros disponíveis
+      responses:
+        200:
+          description: OK
+    
+    post:
+      summary: Adicionar um novo livro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                  description: O título do livro.
+                  example: "Diario de Anne Frank"
+                descricao:
+                  type: string
+                  description: A descrição do livro.
+                  example: "Narrar momentos vivenciados pelo grupo de judeus confinados em um esconderijo durante a ocupação nazista dos Países Baixos."
+        
+      responses:
+        201:
+          description: Livro adicionado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location:
+                    type: string
+                    description: O URI do novo livro criado.
+        400:
+          description: Requisição inválida
+
+  /livros/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Acessar um livro específico
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object  
+                properties:
+                  titulo:
+                    type: string
+                  descricao:
+                    type: string
+        404:
+          description: Livro não encontrado.
+
+    delete:
+      summary: Remover um livro.
+      responses:
+        200:
+          description: Livro removido
+        404:
+          description: Livro não encontrado
+
+    put:
+      summary: Atualizar informações de um livro.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                  description: O título do livro.
+                  example: "Diario de Anne Frank"
+                descricao:
+                  type: string
+                  description: A descrição do livro.
+                  example: "Narrar momentos vivenciados pelo grupo de judeus confinados em um esconderijo durante a ocupação nazista dos Países Baixos."
+        
+      responses:
+        200: 
+          description: Livro atualizado
+        404:
+          description: Livro não encontrado.
