@@ -101,7 +101,6 @@ function App() {
                     )}
                     </div>
                 </CarrinhoProvider>
-
             </div>
         </AuthProvider>
     );
