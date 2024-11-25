@@ -1,0 +1,149 @@
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #5B4380;
+  color: white;
+}
+
+.logo h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.search-bar input {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  width: 300px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.actions button {
+  background-color: #9B82CA;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.actions button:hover {
+  transform: scale(1.1);
+}
+
+.cart-icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.product-list {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  flex-wrap: wrap; 
+  gap: 20px;
+  padding: 20px;
+  background-color: #5B4380;
+}
+.product-card {
+  background-color: #FAF8D5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  padding: 20px;
+  margin: 0; 
+  width: 200px; 
+  height: 431px;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.product-card img {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.product-card {
+  background-color: #FAF8D5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  width: 200px;
+  height: auto;
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 0; 
+}
+
+.product-card button {
+  width: 100%; 
+  max-width: 189px; 
+  height: 49px;
+  border-radius: 50px;
+  border: none;
+  background-color: #9B82CA;
+  font-size: medium;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.product-card button:hover {
+  transform: scale(1.1); 
+  background-color: transparent;
+  border: 1px solid #5B4380;
+  color: #5B4380;
+}
+
+
+.navbar ul {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  background-color: #ffffff;
+  list-style: none; 
+  padding: 0;
+  margin: 0;
+  height: 60px; 
+}
+
+.navbar ul li {
+  margin: 0 10px;
+}
+
+.navbar ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: #9B82CA; 
+  transition: all 0.3s ease; 
+}
+
+.navbar ul li a:hover {
+  color: #5B4380;
+  background-color: #FAF8D5; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
