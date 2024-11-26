@@ -28,12 +28,11 @@ class LivroController extends Controller
     {
         $titulo = $request->input('titulo');
         $autor = $request->input('autor');
-        $genero = $request->input('genero');
         $descricao = $request->input('descricao');
         $anoLancamento = $request->input('anoLancamento');
         $preco = $request->input('preco');
 
-        $p = Livro::create(['titulo' => $titulo, 'autor' => $autor, 'genero' => $genero,
+        $p = Livro::create(['titulo' => $titulo, 'autor' => $autor,
         'descricao' => $descricao, 'anoLancamento' => $anoLancamento, 'preco' => $preco]);
         
         
@@ -70,9 +69,6 @@ class LivroController extends Controller
         $autor = request()->input('autor');
         if ($autor)
             $livro->autor = $autor;
-        $genero = request()->input('genero');
-        if ($genero)
-            $livro->genero = $genero;
         $descricao = request()->input('descricao');
         if ($descricao)
             $livro->descricao = $descricao;

@@ -13,8 +13,5 @@ class Usuario extends Model
         'nome', 
         'email', 
         'senha', 
-        'telefone', 
-        'cpf', 
-        'endereco', 
     ];
 }

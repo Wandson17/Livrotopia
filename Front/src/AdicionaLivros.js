@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./AdicionaLivros.css";
+import Footer from "./componentes/Footer";
+import Header from "./componentes/Header"; // Importe o Header
 
-const AdicionaLivros = ({ onVoltar }) => {
+const AdicionaLivros = ({
+  onVoltar,
+  onLoginRedirect,
+  onCadastroRedirect,
+  onAdicionarLivrosRedirect,
+  onCarrinhoRedirect,
+  onPerfilRedirect,
+}) => {
   const [livros, setLivros] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [autor, setAutor] = useState("");
@@ -25,7 +34,14 @@ const AdicionaLivros = ({ onVoltar }) => {
 
   const adicionarLivro = async (e) => {
     e.preventDefault();
-    const novoLivro = { titulo, autor, genero, descricao, anoLancamento, preco };
+    const novoLivro = {
+      titulo,
+      autor,
+      genero,
+      descricao,
+      anoLancamento,
+      preco,
+    };
     const url = editando
       ? `http://localhost:8000/api/livros/${idEditando}`
       : "http://localhost:8000/api/livros";
@@ -69,7 +85,9 @@ const AdicionaLivros = ({ onVoltar }) => {
 
   const apagarLivro = async (id) => {
     try {
-      await fetch(`http://localhost:8000/api/livros/${id}`, { method: "DELETE" });
+      await fetch(`http://localhost:8000/api/livros/${id}`, {
+        method: "DELETE",
+      });
       fetchLivros();
     } catch (error) {
       console.error(error);
@@ -82,6 +100,15 @@ const AdicionaLivros = ({ onVoltar }) => {
 
   return (
     <div className="Adiciona">
+      <Header
+        isAuthenticated={true} // Defina conforme necessário
+        isAdmin={true} // Acesso administrativo
+        onLoginRedirect={onLoginRedirect}
+        onCadastroRedirect={onCadastroRedirect}
+        onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
+        onCarrinhoRedirect={onCarrinhoRedirect}
+        onPerfilRedirect={onPerfilRedirect}
+      />
       <h1>Cadastro de livros</h1>
       <form onSubmit={adicionarLivro} className="cadastro">
         <div className="topo">
@@ -115,7 +142,7 @@ const AdicionaLivros = ({ onVoltar }) => {
               value={descricao}
               onChange={(e) => setDescricao(e.target.value)}
               required
-              />
+            />
             <input
               type="number"
               placeholder="Ano"
@@ -123,7 +150,7 @@ const AdicionaLivros = ({ onVoltar }) => {
               onChange={(e) => setAnoLancamento(e.target.value)}
               required
             />
-             <input
+            <input
               type="number"
               placeholder="Valor"
               value={preco}
@@ -132,13 +159,21 @@ const AdicionaLivros = ({ onVoltar }) => {
             />
           </div>
           <div className="topo3">
-            <input className="imagem" type="file" />
-            <button></button>
+            <input
+              type="file"
+              id="imagem-upload"
+              className="imagem"
+              onChange={(e) => console.log(e.target.files[0])} // Pode salvar a imagem no estado
+            />
+            <label htmlFor="imagem-upload" className="imagem-label">
+            </label>
             <p>Insira a capa do livro</p>
           </div>
         </div>
         <div className="baixo">
-          <button type="submit">{editando ? "Salvar Alterações" : "Cadastrar Livro"}</button>
+          <button type="submit">
+            {editando ? "Salvar Alterações" : "Cadastrar Livro"}
+          </button>
         </div>
       </form>
       <h1>Livros cadastrados</h1>
@@ -163,7 +198,10 @@ const AdicionaLivros = ({ onVoltar }) => {
           </div>
         ))}
       </div>
-      <button className="voltar" onClick={onVoltar}>Voltar para a página inicial</button>
+      <button className="voltar" onClick={onVoltar}>
+        Voltar para a página inicial
+      </button>
+      <Footer />
     </div>
   );
 };

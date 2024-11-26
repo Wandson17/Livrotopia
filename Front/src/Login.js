@@ -4,6 +4,7 @@ import "./Login.css";
 import pessoa from "./imgs/pessoa.png";
 import cadeado from "./imgs/cadeado.png";
 
+
 export default function Login({ onLoginSuccess, onCadastroRedirect }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,7 +47,6 @@ export default function Login({ onLoginSuccess, onCadastroRedirect }) {
         </div>
         <div className="login">
           <h1>Login</h1>
-          <p>Precisa estar logado para adicionar ao carrinho</p>
           <form onSubmit={handleSubmit}>
             <div className="inputContainer">
               <img src={pessoa} alt="Ícone pessoa" />

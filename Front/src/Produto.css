@@ -1,9 +1,10 @@
 /* Container */
+
 .container {
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
-  background: #fff;
+  background: #DAD5CA;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -64,25 +65,41 @@ select,
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: #492F60;
   color: #fff;
   border: none;
   cursor: pointer;
+  border-radius: 20px;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #765691; 
+  transform: scale(1.05); 
 }
 
 .btn-secondary {
-  background-color: #28a745;
+  background-color: #492F60;
   color: #fff;
   border: none;
   cursor: pointer;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+.enviarbotao{
+  border: none;
+  background-color: #492F60;
+  border-radius: 5px;
+  color: white;
+}
+.enviarbotao:hover{
+  background-color: #765691;
+  transform: scale(1.05); 
 }
 
 .btn-secondary:hover {
-  background-color: #218838;
+  background-color: #765691;
+  transform: scale(1.05); 
 }
 
 /* Feedback */
@@ -94,13 +111,13 @@ select,
   font-size: 20px;
   margin-bottom: 20px;
   color: #222;
-  border-bottom: 2px solid #007bff;
+  border-bottom: 2px solid black;
   display: inline-block;
 }
 
 .feedback-form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
 }
 
@@ -110,7 +127,10 @@ select,
   border-radius: 5px;
   padding: 10px;
   font-size: 14px;
-  width: 160vh;
+  width: 100%;
+}
+.feedback-form button{
+  padding: 15px;
 }
 
 .reviews .review {
@@ -124,10 +144,38 @@ select,
 .review-title {
   font-weight: bold;
   margin-bottom: 5px;
-  color: #007bff;
+  color: black;
 }
 
 .review-author {
   font-size: 12px;
   color: #555;
+}
+.voltarproduto {
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 5px;
+  background-color: #492F60;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+.voltarproduto:hover {
+  background-color:#765691;
+  transform: scale(1.05); 
+}
+.ranqueando img{
+  width: 25px;
+  height:25px;
+}
+.ranqueando{
+  display: flex;
+  gap: 5px;
+}
+.reviews .review{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

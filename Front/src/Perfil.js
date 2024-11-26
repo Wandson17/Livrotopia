@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "./Perfil.css";
 import { useAuth } from "./AuthContext";
+import Header from "./componentes/Header";
+import Footer from "./componentes/Footer";
 
-const Perfil = ({ onVoltar, onCarrinhoRedirect, onLoginRedirect }) => {
+const Perfil = ({
+  onVoltar,
+  onLoginRedirect,
+  onCadastroRedirect,
+  onAdicionarLivrosRedirect,
+  onCarrinhoRedirect,
+  onPerfilRedirect,
+}) => {
   const { logout, usuarioLogado, updateUser } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
 
   // Estados para armazenar dados do formulário
   const [formData, setFormData] = useState({
@@ -41,24 +51,23 @@ const Perfil = ({ onVoltar, onCarrinhoRedirect, onLoginRedirect }) => {
     const { nome, email, telefone, cpf } = formData;
 
     if (!nome || !email) {
-        alert("Por favor, preencha os campos obrigatórios: Nome e Email.");
-        return false;
+      alert("Por favor, preencha os campos obrigatórios: Nome e Email.");
+      return false;
     }
 
     if (telefone && isNaN(parseInt(telefone, 10))) {
-        alert("O telefone deve ser um número válido.");
-        return false;
+      alert("O telefone deve ser um número válido.");
+      return false;
     }
 
     const cpfRegex = /^\d{11}$/;
     if (cpf && !cpfRegex.test(cpf)) {
-        alert("O CPF deve conter exatamente 11 dígitos numéricos.");
-        return false;
+      alert("O CPF deve conter exatamente 11 dígitos numéricos.");
+      return false;
     }
 
     return true;
   };
-
 
   // Salva alterações no backend
   const salvarAlteracoes = async (e) => {
@@ -67,43 +76,41 @@ const Perfil = ({ onVoltar, onCarrinhoRedirect, onLoginRedirect }) => {
     if (!validarFormulario()) return;
 
     try {
-        const response = await fetch(
-            `http://localhost:8000/api/usuarios/${usuarioLogado.id}`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify(formData),
-            }
-        );
-
-        if (response.ok) {
-            const updatedUser = await response.json();
-            updateUser(updatedUser);
-            setEditando(false);
-            alert("Informações atualizadas com sucesso!");
-        } else {
-            const errorData = await response.json();
-            if (errorData.errors) {
-                const messages = Object.values(errorData.errors)
-                    .flat()
-                    .join("\n");
-                alert(`Erro de validação:\n${messages}`);
-            } else {
-                alert(
-                    `Erro ao salvar as alterações: ${
-                        errorData.message || "Erro desconhecido no backend"
-                    }`
-                );
-            }
+      const response = await fetch(
+        `http://localhost:8000/api/usuarios/${usuarioLogado.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(formData),
         }
+      );
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        updateUser(updatedUser);
+        setEditando(false);
+        alert("Informações atualizadas com sucesso!");
+      } else {
+        const errorData = await response.json();
+        if (errorData.errors) {
+          const messages = Object.values(errorData.errors).flat().join("\n");
+          alert(`Erro de validação:\n${messages}`);
+        } else {
+          alert(
+            `Erro ao salvar as alterações: ${
+              errorData.message || "Erro desconhecido no backend"
+            }`
+          );
+        }
+      }
     } catch (error) {
-        console.error("Erro ao salvar no backend:", error);
-        alert("Erro ao salvar as alterações. Verifique sua conexão.");
+      console.error("Erro ao salvar no backend:", error);
+      alert("Erro ao salvar as alterações. Verifique sua conexão.");
     }
-};
+  };
 
   // Exclui o perfil do usuário
   const excluirPerfil = async () => {
@@ -132,19 +139,15 @@ const Perfil = ({ onVoltar, onCarrinhoRedirect, onLoginRedirect }) => {
 
   return (
     <div>
-      {/* Barra de Navegação */}
-      <header className="navbar">
-        <div className="logo" onClick={onVoltar}>
-          LOGO
-        </div>
-        <div className="nav-icons">
-          <button className="profile-btn">👤</button>
-          <button className="cart-btn" onClick={onCarrinhoRedirect}>
-            🛒
-          </button>
-        </div>
-      </header>
-
+      <Header
+        isAuthenticated={isAuthenticated} // Defina conforme necessário
+        isAdmin={isAdmin} // Acesso administrativo
+        onLoginRedirect={onLoginRedirect}
+        onCadastroRedirect={onCadastroRedirect}
+        onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
+        onCarrinhoRedirect={onCarrinhoRedirect}
+        onPerfilRedirect={onPerfilRedirect}
+      />
       <h1 className="profile-title">Perfil</h1>
       <main className="profile-container">
         <div className="left-section">
@@ -171,21 +174,35 @@ const Perfil = ({ onVoltar, onCarrinhoRedirect, onLoginRedirect }) => {
               {["nome", "email", "senha", "telefone", "cpf", "endereco"].map(
                 (field) => (
                   <div key={field}>
-                    <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
-                    <input
-                      type={field === "senha" ? "password" : "text"}
-                      name={field}
-                      value={formData[field]}
-                      onChange={handleInputChange}
-                      placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                    />
+                    <label>
+                      {field.charAt(0).toUpperCase() + field.slice(1)}
+                    </label>
+                    <div>
+                      <input
+                        type={field === "senha" ? "password" : "text"}
+                        name={field}
+                        value={formData[field]}
+                        onChange={handleInputChange}
+                        placeholder={
+                          field.charAt(0).toUpperCase() + field.slice(1)
+                        }
+                      />
+                    </div>
                   </div>
                 )
               )}
-              <button type="submit">Salvar</button>
-              <button type="button" onClick={() => setEditando(false)}>
-                Cancelar
-              </button>
+              <div className="SalvareCancelar">
+                <button className="salvarperfil" type="submit">
+                  Salvar
+                </button>
+                <button
+                  className="cancelarperfil"
+                  type="button"
+                  onClick={() => setEditando(false)}
+                >
+                  Cancelar
+                </button>
+              </div>
             </form>
           ) : (
             <div>
@@ -205,6 +222,7 @@ const Perfil = ({ onVoltar, onCarrinhoRedirect, onLoginRedirect }) => {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

@@ -28,55 +28,39 @@ class UsuarioController extends Controller
 
    
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:usuarios,email|max:255',
-            'senha' => 'required|string|min:6',
-            'telefone' => 'nullable|string|max:15',
-            'cpf' => 'nullable|digits:11',
-            'endereco' => 'nullable|string|max:255',
-        ]);
-     
-        $validatedData['senha'] = Hash::make($validatedData['senha']);
-         
-        $user = Usuario::create($validatedData);
-     
-        return response()->json(['location' => route('usuarios.show', $user->id)], 201);
-     }
+    {   
+        $nome = $request->input('nome');
+        $email = $request->input('email');
+        $senha = Hash::make($request->input('senha'));
+
+        $user = Usuario::create(['nome' => $nome, 'email' => $email, 'senha' => $senha]);
+        $id = $user->id;
+        return response(
+            ['location' => route('usuarios.show', $id)],
+            201
+        );
+    }
 
     public function show(Usuario $usuario)
     {
         return $usuario;
     }
 
-   
-    public function update(Request $request, $id)
+    // Atualizar um usuário (opcional)
+    public function update(Request $request, Usuario $usuario)
     {
-        $usuario = Usuario::find($id);
-
-        if (!$usuario) {
-            return response()->json(['mensagem' => 'Usuário não encontrado'], 404);
-        }
-
-        $validatedData = $request->validate([
-            'nome' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255|unique:usuarios,email,' . $id,
-            'senha' => 'nullable|string|min:6',
-            'telefone' => 'nullable|string|max:15',
-            'cpf' => 'nullable|digits:11',
-            'endereco' => 'nullable|string|max:255',
-        ]);
-
-        if (isset($validatedData['senha'])) {
-            $validatedData['senha'] = Hash::make($validatedData['senha']);
-        }
-
-        $usuario->update($validatedData);
-
-        return response()->json($usuario, 200);
+        $nome = request()->input('nome');
+        if ($nome)
+            $usuario->nome = $nome;
+        $email = request()->input('email');
+        if ($email)
+            $usuario->email = $email;
+        $senha = request()->input('senha');
+        if ($senha)
+            $usuario->senha = $senha;
+        
+        $usuario->save();
     }
-
 
     // Deletar um usuário
     public function destroy(Usuario $usuario)
@@ -98,6 +82,6 @@ class UsuarioController extends Controller
             ], 200);
         }
 
-        return response()->json(['mensagem' => 'Cadastro não encontrado'], 401);
+        return response()->json(['mensagem' => 'Credenciais inválidas.'], 401);
     }
 }

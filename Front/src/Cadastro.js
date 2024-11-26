@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import pessoa from "./imgs/pessoa.png";
 import cadeado from "./imgs/cadeado.png";
+import carta from "./imgs/carta.png";
 
 export default function Cadastro({ onCadastroSuccess, onLoginRedirect }) {
   const [nome, setNome] = useState("");
@@ -55,6 +56,7 @@ export default function Cadastro({ onCadastroSuccess, onLoginRedirect }) {
               />
             </div>
             <div className="inputContainer">
+              <img src={carta} alt="Ícone do email" />
               <input
                 type="email"
                 value={email}

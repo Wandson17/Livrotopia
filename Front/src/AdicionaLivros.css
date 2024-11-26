@@ -1,138 +1,136 @@
-.Adiciona{
+.Adiciona {
   width: 100%;
-  background-color: #5B4380;
+  background-color: #F0ECE2;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+header{
+  width:100%;
+}
 .topo {
-width: 100%;
-background-color: transparent;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-wrap: wrap;
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 .baixo {
-background-color: transparent;
+  background-color: transparent;
 }
 .cadastro {
-display: flex;
-width: 80%; 
-padding-top: 20px;
-padding-bottom: 50px;
-margin-bottom: 50px;
-flex-direction: column;
-background-color: #210052;
-border-radius: 20px;
+  display: flex;
+  width: 80%;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+  flex-direction: column;
+  background-color: #765691;
+  border-radius: 20px;
 }
-.topo1 input{
+.topo1 input {
   width: 300px;
   height: 40px;
   border-radius: 10px;
   border: none;
   margin: 5px;
-  background-color: #9b82ca;
+  background-color: white;
   padding-left: 10px;
 }
-.topo2 input{
+.topo1 input::placeholder{
+  color: black;
+}
+.topo2 input {
   width: 300px;
   height: 40px;
   border-radius: 10px;
   border: none;
   margin: 5px;
-  background-color: #9b82ca;
+  background-color: white;
   padding-left: 10px;
 }
-.topo3 p{
-  color:white;
+.topo2 input::placeholder{
+  color: black;
+}
+.topo3 p {
+  color: white;
 }
 
-.topo div{
+.topo div {
   width: 350px;
-  background-color:transparent;
+  background-color: transparent;
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 5px;
 }
-.topo2 .descricao{
+.topo2 .descricao {
   height: 135px;
 }
 .imagem {
-  display: none;
+  display: none; 
 }
 
-.imagem + button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
+.imagem-label {
+  display: inline-block;
   height: 200px;
-  background-image: url('./imgs/imagem.png'); 
-  background-size: cover;
+  width: 200px;
+  background-color: white;
+  background-image: url(./imgs/imagem.png);
   background-position: center;
-  background-repeat: no-repeat; 
-  border: 2px dashed #ccc;
-  border-radius: 10px;
+  background-size: cover;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; /* Transição suave para todas as propriedades */
 }
 
-.imagem + button:hover {
-  border-color: #5B4380;
-  background-color: rgba(91, 67, 128, 0.2); 
-  transform: scale(1.05);
+.imagem-label:hover {
+  background-color: #f0f0f0; /* Altera a cor de fundo para um tom mais claro */
+  transform: scale(1.05); /* Aumenta levemente o tamanho */
+  filter: brightness(1.2); /* Aumenta o brilho da imagem */
 }
-
-
-.imagem:focus + button {
-  outline: 3px solid #9b82ca;
-}
-.baixo button{
+.baixo button {
   padding: 15px;
   border-radius: 5px;
-  background-color: #9b82ca;
+  background-color: #492F60;
   color: white;
   border: none;
 }
 .baixo button:hover {
-  background-color: #5B4380;
-  transform: scale(1.05); 
-  transition: all 0.3s ease; 
+  background-color: white;
+  color: #492F60;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
-.livros-cadastrados{
+.livros-cadastrados {
   width: 80%;
   background-color: transparent;
   padding: 10px;
   flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
-
 }
-.card-cadastrados{
+.card-cadastrados {
+  width: 100%;
+  justify-content: space-between;
   display: flex;
   padding: 10px;
   margin-bottom: 10px;
-  background-color: #DDDFDB;
+  background-color: #DAD5CA;
   border-radius: 20px;
 }
-.card-cadastrados div{
-  background-color: transparent;
+.card-cadastrados div {
   margin: 5px;
   border-radius: 20px;
 }
-.capa{
-  width: 240px;
+.capa {
+  width: 300px;
   height: 300px;
 }
-.card-cadastrados .botoes-cadastrados button{
-  background-color: #210052;
+.card-cadastrados .botoes-cadastrados button {
+  background-color: #765691;
   color: white;
   padding: 10px;
   border-radius: 5px;
@@ -140,25 +138,26 @@ border-radius: 20px;
   height: 40px;
   transition: all 0.3s ease;
 }
-.botoes-cadastrados{
+.botoes-cadastrados {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.botoes-cadastrados button{
+.botoes-cadastrados button {
   border: none;
 }
 
 .card-cadastrados .informacoes {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
+  width: 100%;
 }
 .card-cadastrados .informacoes .valor {
-  margin-top: auto; 
+  margin-top: auto;
   font-size: 1.5rem;
 }
-.capa img{
+.capa img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -166,37 +165,43 @@ border-radius: 20px;
   margin-bottom: 10px;
 }
 .voltar {
-  background-color: #210052;
+  background-color: #765691;
   padding: 20px;
   border-radius: 30px;
   color: white;
-  transition: all 0.3s ease; 
+  transition: all 0.3s ease;
+  border:none;
+  margin-bottom: 20px;
 }
 
 .voltar:hover {
-  background-color: #35007a; 
+  background-color: #492F60;
   color: white;
   transform: scale(1.1);
 }
-.botoes-cadastrados button:hover{
-  background-color: #35007a; 
-  color: white; 
+.botoes-cadastrados button:hover {
+  background-color: #492F60;
+  color: white;
   transform: scale(1.1);
+}
+.Adiciona h1{
+  color:black;
 }
 
 @media (max-width: 1000px) {
   .card-cadastrados {
-    flex-direction: column; 
+    flex-direction: column;
   }
 
   .card-cadastrados div {
-    width: 100%; 
+    width: 100%;
     margin: 10px 0;
   }
-  .botoes-cadastrados{
-      align-items: center;
+  .botoes-cadastrados {
+    align-items: center;
   }
-  .botoes-cadastrados button{
-      margin-top: 5px;
+  .botoes-cadastrados button {
+    margin-top: 5px;
   }
 }
+

@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 50px auto;
   padding: 20px;
-  background: #fff;
+  background: #DAD5CA;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -16,12 +16,12 @@
 
 .checkout-header h1 {
   font-size: 2rem;
-  color: #444;
+  color: black;
 }
 
 .checkout-header p {
   font-size: 1rem;
-  color: #666;
+  color: black;
 }
 
 /* Conteúdo */
@@ -82,7 +82,11 @@
 
 .payment-section {
   flex: 1;
-  min-width: 300px;
+}
+.payment-section form{
+  display: flex;
+  padding-left: 50px;
+  align-items: start;
 }
 
 .payment-section h2 {
@@ -108,18 +112,26 @@
 }
 
 .small-input {
-  width: 120px;
+  width: 145px;
+  height: 23px;
   padding: 0.5rem;
   margin: 0.3rem 0;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+.small-input::placeholder{
+  color: gray;
+}
 .big-input {
-  width: 350px;
+  width: 320px;
+  height: 23px;
   padding: 0.5rem;
   margin: 0.3rem 0;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+.big-input::placeholder{
+  color: gray;
 }
 
 .card-details {
@@ -128,19 +140,25 @@
 }
 
 .card-details div {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 
 .btn-primary {
-  padding: 12px;
-  background-color: #444;
+  padding: 15px;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius:20px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .btn-primary:hover {
   background-color: #333;
+}
+.payment-section .form .botoes{
+  gap: 80px;
+  display: flex;
+  justify-content:space-around;
 }

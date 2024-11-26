@@ -1,15 +1,12 @@
-/* Geral */
-/* body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
-} */
+body{
+  background-color: #F0ECE2;
+}
 
 .profile-title {
   text-align: center;
   margin: 20px 0;
   font-size: 32px;
-  color: #333;
+
 }
 
 /* Barra de Navegação */
@@ -18,7 +15,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #4e4e4e;
+  background-color: black;
   color: white;
 }
 
@@ -85,22 +82,61 @@
 /* Conteúdo Principal */
 .profile-container {
   display: flex;
+  height: 550px;
   justify-content: center;
   align-items: flex-start;
   margin: 20px auto;
   max-width: 900px;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
+  border-radius: 20px;
   overflow: hidden;
 }
 
 .left-section {
-  background-color: #f0f0f0;
+  background-color: #DAD5CA;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  flex-direction: column;
   padding: 20px;
   text-align: center;
   width: 40%;
 }
+.left-section button {
+  padding: 13px;
+  border-radius: 20px;
+  border: none;
+  margin: 5px;
+  background-color: #765691;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.salvarperfil, .cancelarperfil{
+  width: 80px;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  margin: 2px;
+  background-color: #492F60;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.salvarperfil:hover, .cancelarperfil:hover{
+  cursor: pointer; 
+  transform: scale(1.05); 
+  background-color: #492F60;
+}
+.inputperfil{
+  background-color: red;
+}
+
+.left-section button:hover {
+  background-color: #492F60; /* Cor mais clara no hover */
+  transform: scale(1.05); /* Leve aumento no tamanho */
+  cursor: pointer; /* Aparece o cursor de mão */
+}
+
 
 .left-section .avatar img {
   width: 100px;
@@ -128,6 +164,30 @@
 .right-section {
   padding: 20px;
   width: 60%;
+  display: flex;
+  background-color: #765691;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+}
+.right-section input{
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+.right-section form{
+  display: flex;
+  align-items: start;
+}
+.right-section div{
+    width: 100%;
+}
+form .SalvareCancelar{
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
 }
 
 .right-section h2 {
@@ -143,7 +203,7 @@
   margin-top: 20px;
 }
 
-.edit-btn,
+/* .edit-btn,
 .delete-btn {
   padding: 10px 20px;
   border: none;
@@ -159,4 +219,4 @@
 
 .delete-btn {
   background-color: #f44336;
-}
+} */
