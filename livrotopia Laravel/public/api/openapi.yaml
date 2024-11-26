@@ -1,8 +1,8 @@
 openapi: '3.0.1'
 info:
-  title: Livrotopia
+  title: Livrotopia - Adicionar Livros
   description:
-    Serviço de acesso exclusivo para admins do Livrotopia, permitindo a adição de novos livros ao catálogo de vendas no site e gerenciamento dos usuários
+    Serviço de acesso exclusivo para admins do Livrotopia, permitindo a adição de novos livros ao catálogo de vendas no site.
   version: '0.1'
 servers:
   - url: http://{host}:{porta}/api
@@ -37,10 +37,6 @@ paths:
                   type: string
                   description: O autor do livro.
                   example: "Anne Frank"
-                genero:
-                  type: string
-                  description: O genero do livro.
-                  example: Autobiografia
                 descricao:
                   type: string
                   description: A descrição do livro.
@@ -88,11 +84,9 @@ paths:
                 properties:
                   titulo:
                     type: string
-                  autor:
-                    type: string
-                  genero:
-                    type: string
                   descricao:
+                    type: string
+                  autor:
                     type: string
                   ano_lancamento:
                     type: integer
@@ -123,18 +117,14 @@ paths:
                   type: string
                   description: O título do livro.
                   example: "Diario de Anne Frank"
-                autor:
-                  type: string
-                  description: O autor do livro.
-                  example: "Anne Frank"
-                genero:
-                  type: string
-                  description: O genero do livro.
-                  example: Autobiografia
                 descricao:
                   type: string
                   description: A descrição do livro.
                   example: "Narrar momentos vivenciados pelo grupo de judeus confinados em um esconderijo durante a ocupação nazista dos Países Baixos."
+                autor:
+                  type: string
+                  description: O autor do livro.
+                  example: "Anne Frank"
                 ano_lancamento:
                   type: integer
                   description: O ano de lançamento do livro.
@@ -168,28 +158,10 @@ paths:
                 properties:
                   nome:
                     type: string
-                    description: Seu nome
-                    example: Monica
                   email:
                     type: string
-                    description: Seu email
-                    example: monica@email.com
                   senha:
                     type: string
-                    description: Sua senha
-                    example: monica123
-                  telefone:
-                    type: string
-                    description: Seu telefone
-                    example: (XX) XXXXX-XXXX
-                  cpf: 
-                    type: string
-                    description: Seu CPF
-                    example: XXX.XXX.XXX-XX
-                  endereco:
-                    type: string
-                    description: Seu Endereço
-                    example: Rua do Limoeiro
         responses:
           200:
             description: Usuário registrado com sucesso
@@ -239,12 +211,6 @@ paths:
                     type: string
                   senha:
                     type: string
-                  telefone:
-                    type: integer
-                  cpf: 
-                    type: integer
-                  endereco:
-                    type: integer
         404:
           description: Usuário não encontrado.
 
@@ -255,31 +221,3 @@ paths:
           description: Usuário removido
         404:
           description: Usuário não encontrado
-
-    put:
-      summary: Atualizar informações de um usuário.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-                type: object  
-                properties:
-                  nome:
-                    type: string
-                  email:
-                    type: string
-                  senha:
-                    type: string
-                  telefone:
-                    type: integer
-                  cpf: 
-                    type: integer
-                  endereco:
-                    type: string
-        
-      responses:
-        200: 
-          description: Usuário atualizado
-        404:
-          description: Usuário não encontrado. 

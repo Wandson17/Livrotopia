@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamps();
             $table->string('titulo');
             $table->string('autor');
-            $table->string('genero');
             $table->string('descricao');
             $table->integer('anoLancamento');
             $table->float('preco');

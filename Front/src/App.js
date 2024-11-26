@@ -13,97 +13,103 @@ import Produto from "./Produto";
 function App() {
   const [currentPage, setCurrentPage] = useState("site");
 
-  const handleLoginRedirect = () => {
-    setCurrentPage("login");
-  };
+  // Funções de navegação
+  const handleLoginRedirect = () => setCurrentPage("login");
+  const handleCadastroRedirect = () => setCurrentPage("cadastro");
+  const handleLoginSuccess = () => setCurrentPage("site");
+  const handleCadastroSuccess = () => setCurrentPage("login");
+  const handleCarrinhoRedirect = () => setCurrentPage("carrinho");
+  const handlePerfilRedirect = () => setCurrentPage("perfil");
+  const handleVoltarPaginaInicial = () => setCurrentPage("site");
+  const handleFinalizarCompraRedirect = () => setCurrentPage("finalizarCompra");
+  const handleProdutoRedirect = () => setCurrentPage("produto");
+  const handleAdicionarLivrosRedirect = () => setCurrentPage("adicionarLivros");
 
-  const handleCadastroRedirect = () => {
-    setCurrentPage("cadastro");
-  };
-
-  const handleLoginSuccess = () => {
-    setCurrentPage("site");
-  };
-
-  const handleCadastroSuccess = () => {
-    setCurrentPage("login");
-  };
-
-  const handleCarrinhoRedirect = () => {
-    setCurrentPage("carrinho");
-  };
-
-  const handlePerfilRedirect = () => {
-    setCurrentPage("perfil");
-  };
-
-  const handleVoltarPaginaInicial = () => {
-    setCurrentPage("site");
-  };
-  const handleFinalizarCompraRedirect = () => {
-    setCurrentPage("finalizarCompra");
-  };
-  const handleProdutoRedirect = () => {
-    setCurrentPage("produto");
-  }
- 
   return (
-        <AuthProvider>
-            <div>
-                <CarrinhoProvider>
-                <div>
-                    {currentPage === "site" && (
-                    <Site
-                        onLoginRedirect={handleLoginRedirect}
-                        onCadastroRedirect={handleCadastroRedirect}
-                        onAdicionarLivrosRedirect={() => setCurrentPage("adicionarLivros")}
-                        onCarrinhoRedirect={handleCarrinhoRedirect}
-                        onPerfilRedirect={handlePerfilRedirect}
-                        onProdutoRedirect={handleProdutoRedirect}
-                    />
-                    )}
-                    {currentPage === "carrinho" && (
-                    <Carrinho 
-                      onVoltar={handleVoltarPaginaInicial} 
-                      onFinalizarRedirect={handleFinalizarCompraRedirect}
-                      />
-                    )}
-                    {currentPage === "adicionarLivros" && (
-                    <AdicionaLivros onVoltar={handleVoltarPaginaInicial} />
-                    )}
-                    {currentPage === "login" && (
-                    <Login
-                        onLoginSuccess={handleLoginSuccess}
-                        onCadastroRedirect={handleCadastroRedirect}
-                    />
-                    )}
-                    {currentPage === "cadastro" && (
-                    <Cadastro 
-                      onCadastroSuccess={handleCadastroSuccess} 
-                      onLoginRedirect={handleLoginRedirect}
-                    />
-                    )}
-                    {currentPage === "perfil" && (
-                    <Perfil
-                      onLoginRedirect={handleLoginRedirect}
-                      onVoltar={handleVoltarPaginaInicial} 
-                      onCarrinhoRedirect={handleCarrinhoRedirect}
-                    />
-                    )}
-                    {currentPage === "finalizarCompra" && (
-                      <FinalizarCompra 
-                        onVoltar={handleVoltarPaginaInicial}
-                        onCarrinhoRedirect={handleCarrinhoRedirect}
-                      />
-                    )}
-                    {currentPage === "produto" && (
-                      <Produto onVoltar={handleVoltarPaginaInicial} />
-                    )}
-                    </div>
-                </CarrinhoProvider>
-            </div>
-        </AuthProvider>
-    );
+    <AuthProvider>
+      <CarrinhoProvider>
+        <div>
+          {currentPage === "site" && (
+            <Site
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+              onProdutoRedirect={handleProdutoRedirect}
+            />
+          )}
+          {currentPage === "carrinho" && (
+            <Carrinho
+              onVoltar={handleVoltarPaginaInicial}
+              onFinalizarRedirect={handleFinalizarCompraRedirect}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+            />
+          )}
+          {currentPage === "adicionarLivros" && (
+            <AdicionaLivros
+              onVoltar={handleVoltarPaginaInicial}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+            />
+          )}
+          {currentPage === "login" && (
+            <Login
+              onLoginSuccess={handleLoginSuccess}
+              onCadastroRedirect={handleCadastroRedirect}
+            />
+          )}
+          {currentPage === "cadastro" && (
+            <Cadastro
+              onCadastroSuccess={handleCadastroSuccess}
+              onLoginRedirect={handleLoginRedirect}
+            />
+          )}
+          {currentPage === "perfil" && (
+            <Perfil
+              onVoltar={handleVoltarPaginaInicial}
+              onFinalizarRedirect={handleFinalizarCompraRedirect}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+            />
+          )}
+          {currentPage === "finalizarCompra" && (
+            <FinalizarCompra
+              onVoltar={handleVoltarPaginaInicial}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+            />
+          )}
+          {currentPage === "produto" && (
+            <Produto 
+            onVoltar={handleVoltarPaginaInicial}
+            onLoginRedirect={handleLoginRedirect}
+            onCadastroRedirect={handleCadastroRedirect}
+            onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+            onCarrinhoRedirect={handleCarrinhoRedirect}
+            onPerfilRedirect={handlePerfilRedirect} />
+          )}
+        </div>
+      </CarrinhoProvider>
+    </AuthProvider>
+  );
 }
 
 export default App;
+
+
+
+
