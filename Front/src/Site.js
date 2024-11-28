@@ -4,7 +4,8 @@ import { useAuth } from "./AuthContext";
 import "./Site.css";
 import Livros from "./componentes/Livros";
 import Footer from "./componentes/Footer";
-import Header from "./componentes/Header"; // Novo import
+import Header from "./componentes/Header";
+import axios from "axios";
 
 const Site = ({
   onLoginRedirect,
@@ -20,13 +21,11 @@ const Site = ({
 
   const fetchLivros = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/livros");
-      if (!response.ok) throw new Error("Erro ao buscar livros");
-
-      const data = await response.json();
-      setLivros(data);
+      const response = await axios.get("http://localhost:8000/api/livros");
+      setLivros(response.data);
     } catch (error) {
       console.error("Erro ao buscar livros:", error);
+      alert("Erro ao carregar a lista de livros. Tente novamente mais tarde.");
     }
   };
 

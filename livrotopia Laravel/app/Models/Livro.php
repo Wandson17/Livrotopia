@@ -15,5 +15,6 @@ class Livro extends Model
         'descricao', 
         'anoLancamento', 
         'preco',
+        'capa',
     ];
 }

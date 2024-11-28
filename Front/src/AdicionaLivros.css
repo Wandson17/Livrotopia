@@ -164,6 +164,13 @@ header{
   border-radius: 8px;
   margin-bottom: 10px;
 }
+
+.preview-imagem {
+  max-width: 200px;
+  max-height: 300px;
+  margin-top: 10px;
+}
+
 .voltar {
   background-color: #765691;
   padding: 20px;

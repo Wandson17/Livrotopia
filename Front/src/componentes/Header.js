@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css"; 
-import menu from "../imgs/menu.png";
+// import menu from "../imgs/menu.png";
 import logo from "../imgs/logo-livrotopia.png";
 import lupa from "../imgs/lupa.png";
 import user from "../imgs/user.png";

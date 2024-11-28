@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./AdicionaLivros.css";
 import Footer from "./componentes/Footer";
-import Header from "./componentes/Header"; // Importe o Header
+import Header from "./componentes/Header";
 
 const AdicionaLivros = ({
   onVoltar,
@@ -20,56 +21,70 @@ const AdicionaLivros = ({
   const [preco, setPreco] = useState("");
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
+  const [imagem, setImagem] = useState(null);
+  const [imagemPreview, setImagemPreview] = useState("");
+
+  const apiUrl = "http://localhost:8000/api/livros";
 
   const fetchLivros = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/livros");
-      if (!response.ok) throw new Error("Erro ao buscar livros");
-      const data = await response.json();
+      const { data } = await axios.get(apiUrl);
       setLivros(data);
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao buscar livros:", error);
+    }
+  };
+
+  const handleImagemChange = (e) => {
+    const arquivo = e.target.files[0];
+    setImagem(arquivo);
+    if (arquivo) {
+      setImagemPreview(URL.createObjectURL(arquivo));
     }
   };
 
   const adicionarLivro = async (e) => {
     e.preventDefault();
-    const novoLivro = {
-      titulo,
-      autor,
-      genero,
-      descricao,
-      anoLancamento,
-      preco,
-    };
-    const url = editando
-      ? `http://localhost:8000/api/livros/${idEditando}`
-      : "http://localhost:8000/api/livros";
-    const method = editando ? "PUT" : "POST";
+
+    const formData = new FormData();
+    formData.append('titulo', titulo);
+    formData.append('autor', autor);
+    formData.append('genero', genero);
+    formData.append('descricao', descricao);
+    formData.append('anoLancamento', anoLancamento);
+    formData.append('preco', preco);
+    if (imagem) {
+      formData.append('capa', imagem);
+    }
 
     try {
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(novoLivro),
-      });
-      if (!response.ok) throw new Error("Erro ao salvar livro");
+      if (editando) {
+        await axios.put(`${apiUrl}/${idEditando}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        await axios.post(apiUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
       fetchLivros();
       resetForm();
     } catch (error) {
-      console.error(error);
+      console.error("Erro ao salvar livro:", error);
     }
   };
 
-  const resetForm = () => {
-    setTitulo("");
-    setAutor("");
-    setGenero("");
-    setDescricao("");
-    setAnoLancamento("");
-    setPreco("");
-    setEditando(false);
-    setIdEditando(null);
+  const apagarLivro = async (id) => {
+    try {
+      await axios.delete(`${apiUrl}/${id}`);
+      fetchLivros();
+    } catch (error) {
+      console.error("Erro ao apagar livro:", error);
+    }
   };
 
   const iniciarEdicao = (livro) => {
@@ -83,15 +98,16 @@ const AdicionaLivros = ({
     setIdEditando(livro.id);
   };
 
-  const apagarLivro = async (id) => {
-    try {
-      await fetch(`http://localhost:8000/api/livros/${id}`, {
-        method: "DELETE",
-      });
-      fetchLivros();
-    } catch (error) {
-      console.error(error);
-    }
+  const resetForm = () => {
+    setTitulo("");
+    setAutor("");
+    setGenero("");
+    setDescricao("");
+    setAnoLancamento("");
+    setPreco("");
+    setImagem(null);
+    setEditando(false);
+    setIdEditando(null);
   };
 
   useEffect(() => {
@@ -101,8 +117,8 @@ const AdicionaLivros = ({
   return (
     <div className="Adiciona">
       <Header
-        isAuthenticated={true} // Defina conforme necessário
-        isAdmin={true} // Acesso administrativo
+        isAuthenticated={true}
+        isAdmin={true}
         onLoginRedirect={onLoginRedirect}
         onCadastroRedirect={onCadastroRedirect}
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
@@ -163,10 +179,10 @@ const AdicionaLivros = ({
               type="file"
               id="imagem-upload"
               className="imagem"
-              onChange={(e) => console.log(e.target.files[0])} // Pode salvar a imagem no estado
+              onChange={handleImagemChange}
             />
-            <label htmlFor="imagem-upload" className="imagem-label">
-            </label>
+            {imagemPreview && <img src={imagemPreview} alt="Pré-visualização da capa" className="preview-imagem" />}
+            <label htmlFor="imagem-upload" className="imagem-label"></label>
             <p>Insira a capa do livro</p>
           </div>
         </div>
@@ -181,7 +197,7 @@ const AdicionaLivros = ({
         {livros.map((livro) => (
           <div className="card-cadastrados" key={livro.id}>
             <div className="capa">
-              <img src={livro.capa || "default.jpg"} alt="Capa do Livro" />
+              <img src={`http://localhost:8000/${livro.capa}`} alt="Capa do livro" />
             </div>
             <div className="informacoes">
               <h2>{livro.titulo}</h2>

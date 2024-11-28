@@ -3,7 +3,7 @@ import { useAuth } from "./AuthContext";
 import "./Login.css";
 import pessoa from "./imgs/pessoa.png";
 import cadeado from "./imgs/cadeado.png";
-
+import axios from "axios";
 
 export default function Login({ onLoginSuccess, onCadastroRedirect }) {
   const [email, setEmail] = useState("");
@@ -14,23 +14,25 @@ export default function Login({ onLoginSuccess, onCadastroRedirect }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/usuarios/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha: password }),
+      const response = await axios.post("http://localhost:8000/api/usuarios/login", {
+        email,
+        senha: password,
       });
-  
-      if (response.ok) {
-        const data = await response.json();
-        const { nome } = data;
+
+      if (response.status === 200) {
+        const { nome } = response.data;
         login(email, password, nome);
         onLoginSuccess();
       } else {
         alert("Credenciais inválidas.");
       }
     } catch (error) {
-      console.error(error);
-      alert("Erro ao conectar ao servidor.");
+      if (error.response) {
+        alert(error.response.data.mensagem || "Erro no login. Tente novamente.");
+      } else {
+        console.error(error);
+        alert("Erro ao conectar ao servidor.");
+      }
     }
   };
 

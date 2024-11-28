@@ -3,6 +3,7 @@ import "./Login.css";
 import pessoa from "./imgs/pessoa.png";
 import cadeado from "./imgs/cadeado.png";
 import carta from "./imgs/carta.png";
+import axios from "axios";
 
 export default function Cadastro({ onCadastroSuccess, onLoginRedirect }) {
   const [nome, setNome] = useState("");
@@ -13,21 +14,26 @@ export default function Cadastro({ onCadastroSuccess, onLoginRedirect }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/api/usuarios", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, senha }),
+      const response = await axios.post("http://localhost:8000/api/usuarios", {
+        nome,
+        email,
+        senha,
       });
 
-      if (response.ok) {
+      if (response.status === 201) {
         setMensagem("Cadastro realizado com sucesso!");
         onCadastroSuccess();
       } else {
         setMensagem("Erro ao cadastrar. Tente novamente.");
       }
     } catch (error) {
-      console.error(error);
-      setMensagem("Erro ao conectar ao servidor.");
+      if (error.response) {
+        // Tratando erro vindo da API
+        setMensagem(error.response.data.mensagem || "Erro ao cadastrar. Tente novamente.");
+      } else {
+        console.error(error);
+        setMensagem("Erro ao conectar ao servidor.");
+      }
     }
   };
 

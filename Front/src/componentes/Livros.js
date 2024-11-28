@@ -12,17 +12,15 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
   const [imagemAtual, setImagemAtual] = useState(0);
 
   const proximaImagem = () => {
-    // Adiciona um pequeno delay para a transição
     setTimeout(() => {
       setImagemAtual((prev) => (prev + 1) % imagens.length);
-    }, 50); // 50ms para garantir a transição suave
+    }, 50);
   };
 
   const imagemAnterior = () => {
-    // Adiciona um pequeno delay para a transição
     setTimeout(() => {
       setImagemAtual((prev) => (prev - 1 + imagens.length) % imagens.length);
-    }, 50); // 50ms para garantir a transição suave
+    }, 50);
   };
 
   return (
@@ -34,11 +32,7 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
           style={{ backgroundImage: `url(${imagens[imagemAtual]})` }}
         >
           <div className="setaEsquerda" onClick={imagemAnterior}>
-            <img
-              className="seta"
-              src={setaEsquerda}
-              alt="Ícone de seta Esquerda"
-            />
+            <img className="seta" src={setaEsquerda} alt="Ícone de seta Esquerda" />
           </div>
           <div className="bolinhas">
             {imagens.map((_, index) => (
@@ -51,11 +45,7 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
             ))}
           </div>
           <div className="setaDireita" onClick={proximaImagem}>
-            <img
-              className="seta"
-              src={setaDireita}
-              alt="Ícone de seta Direita"
-            />
+            <img className="seta" src={setaDireita} alt="Ícone de seta Direita" />
           </div>
         </div>
 
@@ -68,13 +58,11 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
             livros.map((livro) => (
               <div key={livro.id} className="card">
                 <img
-                  src={livro.imagem || capaPadrao} // Coloca imagem do livro ou imagem padrão
-                  alt="Livro"
+                  src={`http://localhost:8000/${livro.capa}`} // A URL da imagem é montada com o caminho retornado pela API
+                  alt="Capa do livro"
+                  onError={(e) => (e.target.src = capaPadrao)} // Caso não haja imagem, usa uma imagem padrão
                 />
-                <h4
-                  onClick={() => onVermais(livro)}
-                  style={{ cursor: "pointer" }}
-                >
+                <h4 onClick={() => onVermais(livro)} style={{ cursor: "pointer" }}>
                   {livro.titulo}
                 </h4>
                 <p>{livro.autor}</p>
@@ -85,9 +73,7 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
                     ? livro.preco.toFixed(2)
                     : "Preço indisponível"}
                 </p>
-                <button onClick={() => onAdicionar(livro)}>
-                  Adicionar ao carrinho
-                </button>
+                <button onClick={() => onAdicionar(livro)}>Adicionar ao carrinho</button>
               </div>
             ))
           ) : (

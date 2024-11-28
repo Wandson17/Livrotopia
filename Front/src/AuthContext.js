@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -9,28 +10,30 @@ export function AuthProvider({ children }) {
 
   const login = async (email, senha) => {
     try {
-      const response = await fetch("http://localhost:8000/api/usuarios/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha }),
+      const response = await axios.post("http://localhost:8000/api/usuarios/login", {
+        email,
+        senha,
       });
-      const data = await response.json();
 
-      if (response.ok) {
-        setIsAuthenticated(true);
-        setUsuarioLogado(data);
-        if (email === "admin@gmail.com" && senha === "admin123") {
-          setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
-        }
-        console.log("Usuário logado:", data);
+      const data = response.data;
+
+      setIsAuthenticated(true);
+      setUsuarioLogado(data);
+
+      if (email === "admin@gmail.com" && senha === "admin123") {
+        setIsAdmin(true);
       } else {
-        alert(data.mensagem || "Erro ao fazer login.");
+        setIsAdmin(false);
       }
+
+      console.log("Usuário logado:", data);
     } catch (error) {
-      console.error("Erro na requisição de login:", error);
-      alert("Erro ao se conectar ao servidor.");
+      if (error.response) {
+        alert(error.response.data.mensagem || "Erro ao fazer login.");
+      } else {
+        console.error("Erro na requisição de login:", error);
+        alert("Erro ao se conectar ao servidor.");
+      }
     }
   };
 

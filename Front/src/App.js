@@ -9,6 +9,7 @@ import AdicionaLivros from "./AdicionaLivros";
 import Perfil from "./Perfil";
 import FinalizarCompra from "./FinalizarCompra";
 import Produto from "./Produto";
+// import Header from "./componentes/Header";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("site");
@@ -102,6 +103,11 @@ function App() {
             onCarrinhoRedirect={handleCarrinhoRedirect}
             onPerfilRedirect={handlePerfilRedirect} />
           )}
+          {/* {currentPage === "header" && (
+            <Header 
+            onVoltar={handleVoltarPaginaInicial}
+            />
+          )} */}
         </div>
       </CarrinhoProvider>
     </AuthProvider>

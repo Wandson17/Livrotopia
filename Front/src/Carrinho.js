@@ -1,9 +1,8 @@
 import React from "react";
 import "./Carrinho.css";
-import anuncio1 from "./imgs/anuncio1.jpg";
-import incremento from "./imgs/incremento.png";
-import decremento from "./imgs/decremento.png";
-import lixo from "./imgs/lixo.png";
+import increment from "./imgs/incremento.png";
+import decrement from "./imgs/decremento.png";
+import trash from "./imgs/lixo.png";
 import Footer from "./componentes/Footer";
 import { useCarrinho } from "./CarrinhoContext";
 import { useAuth } from "./AuthContext";
@@ -30,8 +29,8 @@ const Carrinho = ({
   return (
     <div className="carrinho">
       <Header
-        isAuthenticated={isAuthenticated} // Defina conforme necessário
-        isAdmin={isAdmin} // Acesso administrativo
+        isAuthenticated={isAuthenticated} 
+        isAdmin={isAdmin}
         onLoginRedirect={onLoginRedirect}
         onCadastroRedirect={onCadastroRedirect}
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
@@ -46,7 +45,12 @@ const Carrinho = ({
           carrinho.map((item) => (
             <div key={item.id} className="produtosCarrinho">
               <div className="produtoCarrinho">
-                <img src={anuncio1} alt="Imagem do produto" />
+                {/* Exibindo a imagem do livro */}
+                <img
+                  src={`http://localhost:8000/${item.capa}`} // Certifique-se de que o caminho está correto
+                  alt={`Capa do livro: ${item.titulo}`}
+                  className="imagemProduto"
+                />
                 <div className="informacoesCarrinho">
                   <div className="superior">
                     <h2>{item.titulo}</h2>
@@ -62,20 +66,20 @@ const Carrinho = ({
                         onClick={() => diminuirQuantidade(item.id)}
                         className="diminuir"
                       >
-                        <img src={decremento} alt="Decrementar" />
+                        <img src={decrement} alt="Decrementar" />
                       </button>
                       <p className="quantidade">{item.quantidade}</p>
                       <button
                         onClick={() => aumentarQuantidade(item.id)}
                         className="aumentar"
                       >
-                        <img src={incremento} alt="Incrementar" />
+                        <img src={increment} alt="Incrementar" />
                       </button>
                       <button
                         onClick={() => removerProduto(item.id)}
                         className="lixeira"
                       >
-                        <img src={lixo} alt="Remover produto" />
+                        <img src={trash} alt="Remover produto" />
                       </button>
                     </div>
                   </div>

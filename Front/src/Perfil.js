@@ -3,6 +3,7 @@ import "./Perfil.css";
 import { useAuth } from "./AuthContext";
 import Header from "./componentes/Header";
 import Footer from "./componentes/Footer";
+import axios from "axios";
 
 const Perfil = ({
   onVoltar,
@@ -15,7 +16,6 @@ const Perfil = ({
   const { logout, usuarioLogado, updateUser } = useAuth();
   const { isAuthenticated, isAdmin } = useAuth();
 
-  // Estados para armazenar dados do formulário
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
@@ -26,7 +26,6 @@ const Perfil = ({
   });
   const [editando, setEditando] = useState(false);
 
-  // Atualiza os campos com os dados do usuário logado
   useEffect(() => {
     if (usuarioLogado) {
       setFormData({
@@ -40,13 +39,11 @@ const Perfil = ({
     }
   }, [usuarioLogado]);
 
-  // Manipula mudanças no formulário
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Validações de formulário
   const validarFormulario = () => {
     const { nome, email, telefone, cpf } = formData;
 
@@ -69,46 +66,37 @@ const Perfil = ({
     return true;
   };
 
-  // Salva alterações no backend
   const salvarAlteracoes = async (e) => {
     e.preventDefault();
 
     if (!validarFormulario()) return;
 
     try {
-      const response = await fetch(
+      const response = await axios.put(
         `http://localhost:8000/api/usuarios/${usuarioLogado.id}`,
+        formData,
         {
-          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify(formData),
         }
       );
 
-      if (response.ok) {
-        const updatedUser = await response.json();
+      if (response.status === 200) {
+        const updatedUser = response.data;
         updateUser(updatedUser);
         setEditando(false);
         alert("Informações atualizadas com sucesso!");
-      } else {
-        const errorData = await response.json();
-        if (errorData.errors) {
-          const messages = Object.values(errorData.errors).flat().join("\n");
-          alert(`Erro de validação:\n${messages}`);
-        } else {
-          alert(
-            `Erro ao salvar as alterações: ${
-              errorData.message || "Erro desconhecido no backend"
-            }`
-          );
-        }
       }
     } catch (error) {
-      console.error("Erro ao salvar no backend:", error);
-      alert("Erro ao salvar as alterações. Verifique sua conexão.");
+      if (error.response && error.response.data.errors) {
+        const messages = Object.values(error.response.data.errors).flat().join("\n");
+        alert(`Erro de validação:\n${messages}`);
+      } else {
+        console.error("Erro ao salvar no backend:", error);
+        alert("Erro ao salvar as alterações. Verifique sua conexão.");
+      }
     }
   };
 
@@ -117,14 +105,11 @@ const Perfil = ({
     if (!window.confirm("Tem certeza de que deseja excluir o perfil?")) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/usuarios/${usuarioLogado.id}`,
-        {
-          method: "DELETE",
-        }
+      const response = await axios.delete(
+        `http://localhost:8000/api/usuarios/${usuarioLogado.id}`
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         logout();
         onLoginRedirect();
         alert("Perfil excluído com sucesso.");
@@ -140,8 +125,8 @@ const Perfil = ({
   return (
     <div>
       <Header
-        isAuthenticated={isAuthenticated} // Defina conforme necessário
-        isAdmin={isAdmin} // Acesso administrativo
+        isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
         onLoginRedirect={onLoginRedirect}
         onCadastroRedirect={onCadastroRedirect}
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
@@ -165,6 +150,7 @@ const Perfil = ({
           >
             Sair
           </button>
+          <button onClick={onVoltar}>Voltar</button>
         </div>
 
         <div className="right-section">
