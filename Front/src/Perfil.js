@@ -103,12 +103,12 @@ const Perfil = ({
   // Exclui o perfil do usuário
   const excluirPerfil = async () => {
     if (!window.confirm("Tem certeza de que deseja excluir o perfil?")) return;
-
+  
     try {
       const response = await axios.delete(
         `http://localhost:8000/api/usuarios/${usuarioLogado.id}`
       );
-
+  
       if (response.status === 200) {
         logout();
         onLoginRedirect();

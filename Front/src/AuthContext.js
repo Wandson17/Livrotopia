@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = createContext();
@@ -8,6 +8,13 @@ export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const login = async (email, senha) => {
     try {
       const response = await axios.post("http://localhost:8000/api/usuarios/login", {
@@ -16,7 +23,8 @@ export function AuthProvider({ children }) {
       });
 
       const data = response.data;
-
+      const token = data.token;
+      localStorage.setItem("authToken", token);
       setIsAuthenticated(true);
       setUsuarioLogado(data);
 
@@ -41,6 +49,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
     setIsAdmin(false);
     setUsuarioLogado(null);
+    localStorage.removeItem("authToken");
   };
 
   const updateUser = (updatedUser) => {

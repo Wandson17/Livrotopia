@@ -28,7 +28,6 @@ export default function Cadastro({ onCadastroSuccess, onLoginRedirect }) {
       }
     } catch (error) {
       if (error.response) {
-        // Tratando erro vindo da API
         setMensagem(error.response.data.mensagem || "Erro ao cadastrar. Tente novamente.");
       } else {
         console.error(error);

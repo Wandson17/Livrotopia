@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useCarrinho } from "./CarrinhoContext";
 import { useAuth } from "./AuthContext";
 import "./Produto.css";
@@ -15,17 +15,98 @@ const Produto = ({
   onPerfilRedirect,
 }) => {
   const { livroSelecionado, adicionarProduto } = useCarrinho();
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, usuarioLogado } = useAuth();
+
+  const [avaliacoes, setAvaliacoes] = useState([]);
+  const [titulo, setTitulo] = useState("");
+  const [corpo, setCorpo] = useState("");
+  const [nota, setNota] = useState(1);
+  const [editandoIndex, setEditandoIndex] = useState(null);
+
+  useEffect(() => {
+    if (livroSelecionado) {
+      const storedAvaliacoes = localStorage.getItem(`avaliacoes_${livroSelecionado.id}`);
+      if (storedAvaliacoes) {
+        setAvaliacoes(JSON.parse(storedAvaliacoes));
+      }
+    }
+  }, [livroSelecionado]);
+
+  useEffect(() => {
+    if (livroSelecionado && avaliacoes.length > 0) {
+      localStorage.setItem(`avaliacoes_${livroSelecionado.id}`, JSON.stringify(avaliacoes));
+    }
+  }, [avaliacoes, livroSelecionado]);
 
   if (!livroSelecionado) {
-    return <p>Produto não encontrado.</p>; // Caso não tenha livro selecionado
+    return <p>Produto não encontrado.</p>;
   }
+
+  const calcularMediaNotas = () => {
+    if (avaliacoes.length === 0) return 0;
+    const somaNotas = avaliacoes.reduce((acc, avaliacao) => acc + avaliacao.nota, 0);
+    return (somaNotas / avaliacoes.length).toFixed(1);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!isAuthenticated) {
+      alert("Você precisa estar logado para deixar uma avaliação.");
+      return;
+    }
+
+    if (!titulo || !corpo) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+
+    if (editandoIndex !== null) {
+      // Editar avaliação existente
+      const novasAvaliacoes = [...avaliacoes];
+      novasAvaliacoes[editandoIndex] = {
+        ...novasAvaliacoes[editandoIndex],
+        titulo,
+        corpo,
+        nota,
+      };
+      setAvaliacoes(novasAvaliacoes);
+      setEditandoIndex(null);
+    } else {
+      // Adicionar nova avaliação
+      const novaAvaliacao = {
+        titulo,
+        corpo,
+        nota,
+        autor: usuarioLogado ? usuarioLogado.nome : "Usuário Anônimo",
+      };
+      setAvaliacoes([...avaliacoes, novaAvaliacao]);
+    }
+
+    // Limpar campos do formulário após envio
+    setTitulo("");
+    setCorpo("");
+    setNota(1);
+  };
+
+  const handleEditar = (index) => {
+    const avaliacao = avaliacoes[index];
+    setTitulo(avaliacao.titulo);
+    setCorpo(avaliacao.corpo);
+    setNota(avaliacao.nota);
+    setEditandoIndex(index);
+  };
+
+  const handleExcluir = (index) => {
+    const novasAvaliacoes = avaliacoes.filter((_, i) => i !== index);
+    setAvaliacoes(novasAvaliacoes);
+  };
 
   return (
     <div>
       <Header
-        isAuthenticated={isAuthenticated} 
-        isAdmin={isAdmin} 
+        isAuthenticated={isAuthenticated}
+        isAdmin={isAdmin}
         onLoginRedirect={onLoginRedirect}
         onCadastroRedirect={onCadastroRedirect}
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
@@ -38,8 +119,8 @@ const Produto = ({
             <div className="product">
               <div className="product-image">
                 <img
-                  src="https://via.placeholder.com/300"
-                  alt="Imagem do Produto"
+                  src={`http://localhost:8000/${livroSelecionado.capa}`}
+                  alt={`Capa do livro: ${livroSelecionado.titulo}`}
                 />
               </div>
               <div className="product-info">
@@ -54,12 +135,8 @@ const Produto = ({
                 <p className="product-description">
                   {livroSelecionado.descricao}
                 </p>
-                <div className="ranqueando">
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
+                <div className="average-rating">
+                  <p>Avaliação: {calcularMediaNotas()} {calcularMediaNotas() > 0 ? "de 5.0" : "Nenhuma avaliação ainda"}</p>
                 </div>
               </div>
               <div className="product-pricing">
@@ -80,42 +157,61 @@ const Produto = ({
           {/* Seção de Feedback */}
           <section className="feedback-section">
             <h2 className="section-title">Avaliações</h2>
-            <form className="feedback-form">
-              <textarea placeholder="Adicione seu feedback"></textarea>
-              <button type="submit" className="enviarbotao">
-                Enviar
-              </button>
-            </form>
+            {isAuthenticated ? (
+              <form className="feedback-form" onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  placeholder="Título da avaliação"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  required
+                />
+                <textarea
+                  placeholder="Adicione seu comentário"
+                  value={corpo}
+                  onChange={(e) => setCorpo(e.target.value)}
+                  required
+                ></textarea>
+                <label>
+                  Nota:
+                  <select
+                    value={nota}
+                    onChange={(e) => setNota(Number(e.target.value))}
+                  >
+                    {[1, 2, 3, 4, 5].map((value) => (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button type="submit" className="enviarbotao">
+                  {editandoIndex !== null ? "Atualizar" : "Enviar"}
+                </button>
+              </form>
+            ) : (
+              <p>Você precisa estar logado para deixar uma avaliação.</p>
+            )}
 
             <div className="reviews">
-              <div className="review">
-                <div className="ranqueando">
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
+              {avaliacoes.map((avaliacao, index) => (
+                <div key={index} className="review">
+                  <div className="ranqueando">
+                    {[...Array(avaliacao.nota)].map((_, i) => (
+                      <img key={i} src={estrela} alt="Estrela" />
+                    ))}
+                  </div>
+                  <h3 className="review-title">{avaliacao.titulo}</h3>
+                  <p className="review-body">{avaliacao.corpo}</p>
+                  <p className="review-author">Por: {avaliacao.autor}</p>
+                  {isAuthenticated && avaliacao.autor === usuarioLogado?.nome && (
+                    <div className="review-actions">
+                      <button onClick={() => handleEditar(index)}>Editar</button>
+                      <button onClick={() => handleExcluir(index)}>Excluir</button>
+                    </div>
+                  )}
                 </div>
-                <h3 className="review-title">Ótimo Produto</h3>
-                <p className="review-body">
-                  A descrição é fiel ao que recebi. Recomendo!
-                </p>
-                <p className="review-author">Por: Cliente Satisfeito</p>
-              </div>
-              <div className="review">
-                <div className="ranqueando">
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                  <img src={estrela}></img>
-                </div>
-                <h3 className="review-title">Bom, mas pode melhorar</h3>
-                <p className="review-body">
-                  Gostei bastante, mas tive problemas na entrega.
-                </p>
-                <p className="review-author">Por: Usuário Anônimo</p>
-              </div>
+              ))}
             </div>
           </section>
         </main>

@@ -121,6 +121,20 @@ select,
   gap: 10px;
 }
 
+.feedback-form input {
+  resize: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+  width: 250px;
+  height: 33px;
+}
+.feedback-form input::placeholder {
+  color: #888; 
+  opacity: 1;
+}
+
 .feedback-form textarea {
   resize: none;
   border: 1px solid #ddd;
@@ -129,6 +143,16 @@ select,
   font-size: 14px;
   width: 100%;
 }
+
+.feedback-form select {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
 .feedback-form button{
   padding: 15px;
 }
@@ -139,6 +163,10 @@ select,
   padding: 15px;
   border-radius: 5px;
   background-color: #f9f9f9;
+  overflow: hidden; /* Evita que o texto ultrapasse */
+  word-wrap: break-word; /* Permite quebra de palavras longas */
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+  max-height: 200px; /* Limita a altura para evitar overflow */
 }
 
 .review-title {
