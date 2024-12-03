@@ -21,6 +21,9 @@
   grid-template-columns: 1fr 2fr 1fr;
   gap: 20px;
 }
+.average-rating p{
+  font-weight: bold;
+}
 
 .product-image img {
   width: 100%;
@@ -70,6 +73,7 @@ select,
   border: none;
   cursor: pointer;
   border-radius: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease; 
 }
 
 .btn-primary:hover {
@@ -91,6 +95,7 @@ select,
   background-color: #492F60;
   border-radius: 5px;
   color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 .enviarbotao:hover{
   background-color: #765691;
@@ -143,7 +148,6 @@ select,
   font-size: 14px;
   width: 100%;
 }
-
 .feedback-form select {
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -166,7 +170,6 @@ select,
   overflow: hidden; /* Evita que o texto ultrapasse */
   word-wrap: break-word; /* Permite quebra de palavras longas */
   text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
-  max-height: 200px; /* Limita a altura para evitar overflow */
 }
 
 .review-title {
@@ -207,3 +210,21 @@ select,
   flex-direction: column;
   gap: 5px;
 }
+.estrela{
+  width: 30px;
+  height: 30px;
+}
+  .review-actions button{
+    background-color: #492F60;
+    margin-right: 5px;
+    padding: 10px;
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+  }
+  .review-actions button:hover{
+    background-color: #765691;
+    transform: scale(1.05); 
+  }
+

@@ -1,6 +1,7 @@
 import React from "react";
-import "./Header.css"; 
-// import menu from "../imgs/menu.png";
+import { useCarrinho } from "../CarrinhoContext";
+
+import "./Header.css";
 import logo from "../imgs/logo-livrotopia.png";
 import lupa from "../imgs/lupa.png";
 import user from "../imgs/user.png";
@@ -15,13 +16,26 @@ const Header = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
+  onVoltar,
 }) => {
+  const { carrinho } = useCarrinho();
+
+  const quantidadeTotal = carrinho.reduce(
+    (acc, item) => acc + item.quantidade,
+    0
+  );
+
   return (
     <header className="header">
       <div className="navbar-container">
         <div className="esquerda">
           <div className="logo">
-            <img src={logo} alt="Logo Livrotopia" />
+            <img
+              src={logo}
+              onClick={onVoltar}
+              style={{ cursor: "pointer" }}
+              alt="Logo Livrotopia"
+            />
           </div>
         </div>
         <div className="direita">
@@ -49,12 +63,16 @@ const Header = ({
                   <button
                     className="carrinhobutton"
                     onClick={onCarrinhoRedirect}
+                    style={{ position: "relative" }}
                   >
                     <img
                       src={carrinhoImage}
                       alt="Carrinho de compras"
                       className="cart-icon"
                     />
+                    {quantidadeTotal > 0 && (
+                      <span className="cart-count">{quantidadeTotal}</span>
+                    )}
                   </button>
                 )}
                 <button className="userbutton" onClick={onPerfilRedirect}>
@@ -76,16 +94,17 @@ const Header = ({
       </div>
       <nav className="navbar">
         <ul>
-          <li><a href="/livros">LIVROS</a></li>
-          <li><a href="/catequese">CATEQUESE</a></li>
-          <li><a href="/sazonais">SAZONAIS</a></li>
-          <li><a href="/artigos">ARTIGOS</a></li>
-          <li><a href="/religiosos">RELIGIOSOS</a></li>
-          <li><a href="/autores">AUTORES</a></li>
-          <li><a href="/colecoes">COLEÇÕES</a></li>
-          <li><a href="/selos">SELOS</a></li>
-          <li><a href="/ebooks">E-BOOKS</a></li>
-          <li><a href="/revistas">REVISTAS</a></li>
+        {/* eslint-disable jsx-a11y/anchor-is-valid */}
+          <li><a href="#">LIVROS</a></li>
+          <li><a href="#">CATEQUESE</a></li>
+          <li><a href="#">SAZONAIS</a></li>
+          <li><a href="#">ARTIGOS</a></li>
+          <li><a href="#">RELIGIOSOS</a></li>
+          <li><a href="#">AUTORES</a></li>
+          <li><a href="#">COLEÇÕES</a></li>
+          <li><a href="#">SELOS</a></li>
+          <li><a href="#">E-BOOKS</a></li>
+          <li><a href="#">REVISTAS</a></li>
         </ul>
       </nav>
     </header>

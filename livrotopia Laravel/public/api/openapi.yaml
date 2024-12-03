@@ -37,6 +37,10 @@ paths:
                   type: string
                   description: O autor do livro.
                   example: "Anne Frank"
+                genero:
+                  type: string
+                  description: O gênero do livro.
+                  example: "Biografia"
                 descricao:
                   type: string
                   description: A descrição do livro.
@@ -50,18 +54,14 @@ paths:
                   format: float
                   description: O preço do livro em reais.
                   example: 39.90
+                capa:
+                  type: string
+                  description: A url da imagem
+                  example: "https://livraria.deiaetiba.com.br/image/cache/data/api/produtos/10984-515x800.jpg?1686834710"
         
       responses:
         201:
           description: Livro adicionado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  location:
-                    type: string
-                    description: O URI do novo livro criado.
         400:
           description: Requisição inválida
 
@@ -88,11 +88,15 @@ paths:
                     type: string
                   autor:
                     type: string
+                  genero:
+                    type: string
                   ano_lancamento:
                     type: integer
                   preco:
                     type: number
                     format: float
+                  capa:
+                    type: string
         404:
           description: Livro não encontrado.
 
@@ -117,15 +121,19 @@ paths:
                   type: string
                   description: O título do livro.
                   example: "Diario de Anne Frank"
-                descricao:
-                  type: string
-                  description: A descrição do livro.
-                  example: "Narrar momentos vivenciados pelo grupo de judeus confinados em um esconderijo durante a ocupação nazista dos Países Baixos."
                 autor:
                   type: string
                   description: O autor do livro.
                   example: "Anne Frank"
-                ano_lancamento:
+                genero:
+                  type: string
+                  description: O gênero do livro.
+                  example: "Biografia"
+                descricao:
+                  type: string
+                  description: A descrição do livro.
+                  example: "Narrar momentos vivenciados pelo grupo de judeus confinados em um esconderijo durante a ocupação nazista dos Países Baixos."
+                anoLancamento:
                   type: integer
                   description: O ano de lançamento do livro.
                   example: 1947
@@ -134,6 +142,10 @@ paths:
                   format: float
                   description: O preço do livro em reais.
                   example: 39.90
+                capa:
+                  type: string
+                  description: A url da imagem
+                  example: "https://livraria.deiaetiba.com.br/image/cache/data/api/produtos/10984-515x800.jpg?1686834710"
         
       responses:
         200: 

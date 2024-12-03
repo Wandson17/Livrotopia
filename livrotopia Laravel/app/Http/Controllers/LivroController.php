@@ -4,78 +4,101 @@ namespace App\Http\Controllers;
 
 use App\Models\Livro;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class LivroController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *         
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        return Livro::all();
+        $livros = Livro::all();
+        return $livros;
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'autor' => 'required|string|max:255',
-            'descricao' => 'required|string|max:500',
-            'anoLancamento' => 'required|integer',
-            'preco' => 'required|numeric',
-            'capa' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        $titulo = $request->input('titulo');
+        $autor = $request->input('autor');
+        $genero = $request->input('genero');
+        $descricao = $request->input('descricao');
+        $anoLancamento = $request->input('anoLancamento');
+        $preco = $request->input('preco');
+        $capa = $request->input('capa');
 
-        $livro = new Livro();
-        $livro->titulo = $request->input('titulo');
-        $livro->autor = $request->input('autor');
-        $livro->descricao = $request->input('descricao');
-        $livro->anoLancamento = $request->input('anoLancamento');
-        $livro->preco = $request->input('preco');
 
-        if ($request->hasFile('capa')) {
-            $capaPath = $request->file('capa')->store('capas', 'public');
-            $livro->capa = 'storage/' . $capaPath;
-        }
-
-        $livro->save();
-        return response(['location' => route('livros.show', $livro->id)], 201);
+        $p = Livro::create(['titulo' => $titulo, 'autor' => $autor, 'genero' => $genero,
+        'descricao' => $descricao, 'anoLancamento' => $anoLancamento, 'preco' => $preco, 'capa' => $capa]);
+        
+        
+        $id = $p->id;
+        return response(
+            ['location' => route('livros.show', $id)],
+            201
+        );
     }
 
-    public function update(Request $request, Livro $livro)
-    {
-        $validated = $request->validate([
-            'titulo' => 'nullable|string|max:255',
-            'autor' => 'nullable|string|max:255',
-            'descricao' => 'nullable|string',
-            'anoLancamento' => 'nullable|integer',
-            'preco' => 'nullable|numeric',
-            'capa' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $livro->update($validated);
-
-        if ($request->hasFile('capa')) {
-            if ($livro->capa && file_exists(storage_path('app/public/' . $livro->capa))) {
-                unlink(storage_path('app/public/' . $livro->capa));
-            }
-
-            $path = $request->file('capa')->store('capas', 'public');
-            $livro->capa = 'storage/' . $path;
-            $livro->save();
-        }
-
-        return response()->json(['livro' => $livro], 200);
-    }
-
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Livro  $Livro
+     * @return \Illuminate\Http\Response
+     */
     public function show(Livro $livro)
     {
         return $livro;
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Livro  $Livro
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Livro $livro)
+    {
+        $titulo = request()->input('titulo');
+        if ($titulo)
+            $livro->titulo = $titulo;
+        $autor = request()->input('autor');
+        if ($autor)
+            $livro->autor = $autor;
+        $genero = request()->input('genero');
+        if ($genero)
+            $livro->genero = $genero;
+        $descricao = request()->input('descricao');
+        if ($descricao)
+            $livro->descricao = $descricao;
+        $anoLancamento = request()->input('anoLancamento');
+        if ($anoLancamento)
+            $livro->anoLancamento = $anoLancamento;
+        $preco = request()->input('preco');
+        if ($preco)
+            $livro->preco = $preco;
+        $capa = request()->input('capa');
+        if ($capa)
+            $livro->capa = $capa;
+        
+        $livro->save();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Livro  $Livro
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Livro $livro)
     {
-        if ($livro->capa) {
-            Storage::delete($livro->capa);
-        }
         $livro->delete();
     }
 }

@@ -3,6 +3,9 @@ import { useCarrinho } from "./CarrinhoContext";
 import { useAuth } from "./AuthContext";
 import "./Produto.css";
 import estrela from "./imgs/estrela.png";
+import capa from "./imgs/capaPadrao.jpeg";
+import estrelacompleta from "./imgs/estrelacompleta.png";
+import estrelametade from "./imgs/estrelametade.png";
 import Footer from "./componentes/Footer";
 import Header from "./componentes/Header";
 
@@ -21,11 +24,14 @@ const Produto = ({
   const [titulo, setTitulo] = useState("");
   const [corpo, setCorpo] = useState("");
   const [nota, setNota] = useState(1);
+  const [hoverNota, setHoverNota] = useState(null); // Estado para hover
   const [editandoIndex, setEditandoIndex] = useState(null);
 
   useEffect(() => {
     if (livroSelecionado) {
-      const storedAvaliacoes = localStorage.getItem(`avaliacoes_${livroSelecionado.id}`);
+      const storedAvaliacoes = localStorage.getItem(
+        `avaliacoes_${livroSelecionado.id}`
+      );
       if (storedAvaliacoes) {
         setAvaliacoes(JSON.parse(storedAvaliacoes));
       }
@@ -34,17 +40,19 @@ const Produto = ({
 
   useEffect(() => {
     if (livroSelecionado && avaliacoes.length > 0) {
-      localStorage.setItem(`avaliacoes_${livroSelecionado.id}`, JSON.stringify(avaliacoes));
+      localStorage.setItem(
+        `avaliacoes_${livroSelecionado.id}`,
+        JSON.stringify(avaliacoes)
+      );
     }
   }, [avaliacoes, livroSelecionado]);
 
-  if (!livroSelecionado) {
-    return <p>Produto não encontrado.</p>;
-  }
-
   const calcularMediaNotas = () => {
     if (avaliacoes.length === 0) return 0;
-    const somaNotas = avaliacoes.reduce((acc, avaliacao) => acc + avaliacao.nota, 0);
+    const somaNotas = avaliacoes.reduce(
+      (acc, avaliacao) => acc + avaliacao.nota,
+      0
+    );
     return (somaNotas / avaliacoes.length).toFixed(1);
   };
 
@@ -62,7 +70,6 @@ const Produto = ({
     }
 
     if (editandoIndex !== null) {
-      // Editar avaliação existente
       const novasAvaliacoes = [...avaliacoes];
       novasAvaliacoes[editandoIndex] = {
         ...novasAvaliacoes[editandoIndex],
@@ -73,7 +80,6 @@ const Produto = ({
       setAvaliacoes(novasAvaliacoes);
       setEditandoIndex(null);
     } else {
-      // Adicionar nova avaliação
       const novaAvaliacao = {
         titulo,
         corpo,
@@ -83,7 +89,6 @@ const Produto = ({
       setAvaliacoes([...avaliacoes, novaAvaliacao]);
     }
 
-    // Limpar campos do formulário após envio
     setTitulo("");
     setCorpo("");
     setNota(1);
@@ -119,7 +124,7 @@ const Produto = ({
             <div className="product">
               <div className="product-image">
                 <img
-                  src={`http://localhost:8000/${livroSelecionado.capa}`}
+                  src={capa}
                   alt={`Capa do livro: ${livroSelecionado.titulo}`}
                 />
               </div>
@@ -128,7 +133,9 @@ const Produto = ({
                 <p className="product-author">
                   Autor: {livroSelecionado.autor}
                 </p>
-                <p className="product-genre">Gênero: Literatura</p>
+                <p className="product-genre">
+                  Gênero: {livroSelecionado.genero}
+                </p>
                 <p className="product-year">
                   Ano: {livroSelecionado.anoLancamento}
                 </p>
@@ -136,7 +143,50 @@ const Produto = ({
                   {livroSelecionado.descricao}
                 </p>
                 <div className="average-rating">
-                  <p>Avaliação: {calcularMediaNotas()} {calcularMediaNotas() > 0 ? "de 5.0" : "Nenhuma avaliação ainda"}</p>
+                  <p>
+                    Avaliação: {calcularMediaNotas()}{" "}
+                    {calcularMediaNotas() > 0
+                      ? "de 5.0"
+                      : "Nenhuma avaliação ainda"}
+                  </p>
+                  <div className="estrelas">
+                    {[...Array(5)].map((_, index) => {
+                      // Verifica a parte inteira e decimal da média
+                      const rating = calcularMediaNotas();
+                      const fullStars = Math.floor(rating); // Quantidade de estrelas cheias
+                      const halfStar = rating % 1 >= 0.5; // Verifica se deve mostrar estrela pela metade
+
+                      // Exibe a estrela cheia, pela metade ou vazia
+                      if (index < fullStars) {
+                        return (
+                          <img
+                            key={index}
+                            src={estrelacompleta}
+                            alt="Estrela cheia"
+                            className="estrela"
+                          />
+                        );
+                      } else if (index === fullStars && halfStar) {
+                        return (
+                          <img
+                            key={index}
+                            src={estrelametade}
+                            alt="Estrela pela metade"
+                            className="estrela"
+                          />
+                        );
+                      } else {
+                        return (
+                          <img
+                            key={index}
+                            src={estrela}
+                            alt="Estrela vazia"
+                            className="estrela"
+                          />
+                        );
+                      }
+                    })}
+                  </div>
                 </div>
               </div>
               <div className="product-pricing">
@@ -154,37 +204,46 @@ const Produto = ({
             </div>
           </section>
 
-          {/* Seção de Feedback */}
           <section className="feedback-section">
             <h2 className="section-title">Avaliações</h2>
             {isAuthenticated ? (
               <form className="feedback-form" onSubmit={handleSubmit}>
-                <input
-                  type="text"
+                <textarea
                   placeholder="Título da avaliação"
                   value={titulo}
                   onChange={(e) => setTitulo(e.target.value)}
                   required
-                />
+                ></textarea>
                 <textarea
                   placeholder="Adicione seu comentário"
                   value={corpo}
                   onChange={(e) => setCorpo(e.target.value)}
                   required
                 ></textarea>
-                <label>
-                  Nota:
-                  <select
-                    value={nota}
-                    onChange={(e) => setNota(Number(e.target.value))}
-                  >
-                    {[1, 2, 3, 4, 5].map((value) => (
-                      <option key={value} value={value}>
-                        {value}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+                <div
+                  className="ranqueando"
+                  style={{ display: "flex", gap: "8px" }}
+                >
+                  {[...Array(5)].map((_, index) => (
+                    <img
+                      key={index}
+                      src={
+                        index < (hoverNota !== null ? hoverNota : nota)
+                          ? estrelacompleta
+                          : estrela
+                      }
+                      alt={`Estrela ${index + 1}`}
+                      onClick={() => setNota(index + 1)}
+                      onMouseEnter={() => setHoverNota(index + 1)}
+                      onMouseLeave={() => setHoverNota(null)}
+                      style={{
+                        cursor: "pointer",
+                        width: "32px",
+                        height: "32px",
+                      }}
+                    />
+                  ))}
+                </div>
                 <button type="submit" className="enviarbotao">
                   {editandoIndex !== null ? "Atualizar" : "Enviar"}
                 </button>
@@ -197,19 +256,34 @@ const Produto = ({
               {avaliacoes.map((avaliacao, index) => (
                 <div key={index} className="review">
                   <div className="ranqueando">
-                    {[...Array(avaliacao.nota)].map((_, i) => (
-                      <img key={i} src={estrela} alt="Estrela" />
+                    {[...Array(5)].map((_, i) => (
+                      <img
+                        key={i}
+                        src={i < avaliacao.nota ? estrelacompleta : estrela}
+                        alt="Estrela"
+                      />
                     ))}
                   </div>
                   <h3 className="review-title">{avaliacao.titulo}</h3>
                   <p className="review-body">{avaliacao.corpo}</p>
                   <p className="review-author">Por: {avaliacao.autor}</p>
-                  {isAuthenticated && avaliacao.autor === usuarioLogado?.nome && (
-                    <div className="review-actions">
-                      <button onClick={() => handleEditar(index)}>Editar</button>
-                      <button onClick={() => handleExcluir(index)}>Excluir</button>
-                    </div>
-                  )}
+                  {isAuthenticated &&
+                    avaliacao.autor === usuarioLogado?.nome && (
+                      <div className="review-actions">
+                        <button
+                          className="editar"
+                          onClick={() => handleEditar(index)}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          className="excluir"
+                          onClick={() => handleExcluir(index)}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    )}
                 </div>
               ))}
             </div>

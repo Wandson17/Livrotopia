@@ -8,22 +8,36 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *         
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $usuarios = Usuario::all();
         return $usuarios;
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+   
     public function store(Request $request)
     {   
         $nome = $request->input('nome');
         $email = $request->input('email');
-        $senha = Hash::make($request->input('senha'));
+        $senha = $request->input('senha'); # Hash::make($request->input('senha'));
 
         $user = Usuario::create(['nome' => $nome, 'email' => $email, 'senha' => $senha]);
         $id = $user->id;
         return response(
-            ['location' => route('usuarios.show', $id)],201
+            ['location' => route('usuarios.show', $id)],
+            201
         );
     }
 
@@ -32,6 +46,7 @@ class UsuarioController extends Controller
         return $usuario;
     }
 
+    // Atualizar um usuário (opcional)
     public function update(Request $request, Usuario $usuario)
     {
         $nome = request()->input('nome');
@@ -47,17 +62,20 @@ class UsuarioController extends Controller
         $usuario->save();
     }
 
+    // Deletar um usuário
     public function destroy(Usuario $usuario)
     {
         $usuario->delete();
 
     }
 
+    // Autenticar um usuário
     public function login(Request $request)
     {
         $usuario = Usuario::where('email', $request->input('email'))->first();
-
-        if ($usuario && Hash::check($request->input('senha'), $usuario->senha)) {
+        # $senha_correta = Hash::check($request->input('senha'), $usuario->senha);
+        $senha_correta = $usuario->senha == $request->input('senha');
+        if ($usuario && $senha_correta) {
             return response()->json([
                 'mensagem' => 'Login bem-sucedido!',
                 'nome' => $usuario->nome,

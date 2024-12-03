@@ -14,6 +14,7 @@ export default function Login({ onLoginSuccess, onCadastroRedirect }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(password);
       const response = await axios.post("http://localhost:8000/api/usuarios/login", {
         email,
         senha: password,

@@ -1,4 +1,13 @@
-.navbar-container{
+@font-face {
+  font-family: "MinhaFonte"; /* Nome personalizado */
+  src: url("./assets/fonts/Garet-Book.woff") format("woff");
+  font-weight: normal; /* Peso da fonte */
+  font-style: normal; /* Estilo da fonte */
+}
+body {
+  font-family: 'MinhaFonte', sans-serif;
+}
+.navbar-container {
   display: flex;
   justify-content: space-between;
   padding-left: 20px;
@@ -6,28 +15,28 @@
   height: 70px;
   background-color: #765691;
 }
-.navbar-container .esquerda{
+.navbar-container .esquerda {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-.navbar-container .direita{
+.navbar-container .direita {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-.menu img{
+.menu img {
   width: 40px;
   height: 40px;
 }
-.lupinha img{
+.lupinha img {
   width: 25px;
   height: 25px;
 }
 .lupinha {
   width: 40px;
   height: 100%;
-  background-color: #DAD5CA;
+  background-color: #dad5ca;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: flex;
@@ -39,12 +48,12 @@
 }
 
 .lupinha:hover {
-  background-color: #492F60;/* Cor do fundo quando o botão é hover */
+  background-color: #492f60; /* Cor do fundo quando o botão é hover */
   transform: scale(1.05); /* Efeito de aumentar o botão */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra mais forte no hover */
 }
 
-.pesquisa input{
+.pesquisa input {
   width: 90%;
   height: 100%;
   border-top-left-radius: 20px;
@@ -53,7 +62,7 @@
   padding-left: 10px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
 }
-.pesquisa input::placeholder{
+.pesquisa input::placeholder {
   color: gray;
 }
 .pesquisa {
@@ -66,7 +75,6 @@
   border-radius: 20px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
 }
-
 
 .botaologin,
 .botaocadastro {
@@ -82,13 +90,12 @@
 
 .botaologin:hover,
 .botaocadastro:hover {
-  background-color: #492F60; /* Cor do fundo quando o botão é hover */
+  background-color: #492f60; /* Cor do fundo quando o botão é hover */
   transform: scale(1.05); /* Efeito de aumentar o botão */
 }
 
-
 .header .navbar {
-  background-color: #492F60; /* Cor de fundo */
+  background-color: #492f60; /* Cor de fundo */
   display: flex;
   flex-wrap: wrap;
   justify-content: center; /* Centraliza horizontalmente */
@@ -120,7 +127,7 @@
 }
 
 .navbar ul li a:hover {
-  background-color: #5B4380; /* Cor de fundo ao passar o mouse */
+  background-color: #5b4380; /* Cor de fundo ao passar o mouse */
   color: #e0f7fa; /* Cor do texto ao passar o mouse */
 }
 
@@ -128,16 +135,20 @@
   background-color: #2e7031; /* Cor para o item ativo */
   color: white;
 }
-.logo img{
+.logo img {
   width: 150px;
   height: 160px;
 }
-.cart-icon, .user-icon, .pincel-icon{
+.cart-icon,
+.user-icon,
+.pincel-icon {
   padding: 5px;
   width: 30px;
   height: 30px;
 }
-.userbutton, .carrinhobutton, .pincelbutton{
+.userbutton,
+.carrinhobutton,
+.pincelbutton {
   border-radius: 50%;
   padding: 3px;
   width: 50px;
@@ -147,7 +158,9 @@
   background-color: white;
   transition: background-color 0.3s, transform 0.3s; /* Adicionando uma transição suave */
 }
-.userbutton:hover, .carrinhobutton:hover, .pincelbutton:hover{
-  background-color: #492F60; /* Cor do fundo quando o botão é hover */
+.userbutton:hover,
+.carrinhobutton:hover,
+.pincelbutton:hover {
+  background-color: #492f60; /* Cor do fundo quando o botão é hover */
   transform: scale(1.05);
 }

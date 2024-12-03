@@ -18,6 +18,9 @@ header{
 }
 .baixo {
   background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap:10px;
 }
 .cadastro {
   display: flex;
@@ -152,7 +155,11 @@ header{
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  word-wrap: break-word; /* Quebra automaticamente palavras longas */
+  overflow-wrap: break-word; /* Suporte adicional para navegadores modernos */
+  word-break: break-word; /* Garante a quebra em palavras grandes */
 }
+
 .card-cadastrados .informacoes .valor {
   margin-top: auto;
   font-size: 1.5rem;
@@ -192,7 +199,7 @@ header{
   transform: scale(1.1);
 }
 .Adiciona h1{
-  color:black;
+  color: #492F60;
 }
 
 @media (max-width: 1000px) {

@@ -2,24 +2,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #F0ECE2;
+  background-color: #f0ece2;
+}
+.testando {
+  background-color: yellow;
+  height: 100%;
 }
 .carrinhoPrincipal {
   display: flex;
   background-color: transparent;
-  flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
   width: 90%;
+  margin-bottom: 20px;
 }
 .produtoCarrinho {
   display: flex;
-  background-color: #DAD5CA;
+  background-color: #dad5ca;
   padding: 10px;
   width: 700px;
   gap: 20px;
   border-radius: 20px;
-  margin: 10px;
 }
 .produtoCarrinho img {
   width: 260px;
@@ -27,12 +31,11 @@
   background-color: transparent;
   border-radius: 20px;
   object-fit: cover;
-  margin:10px;
+  margin: 10px;
 }
 .produtosCarrinho {
   background-color: transparent;
   gap: 10px;
-  padding: 5px;
   display: flex;
   flex-direction: column;
 }
@@ -54,6 +57,26 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.informacoesCarrinho .superior {
+  display: flex;
+  flex-direction: column; /* Alinha os itens na vertical */
+  flex-wrap: nowrap; /* Não é necessário porque o eixo principal é vertical */
+  background-color: transparent;
+  box-sizing: border-box;
+  width: 100%;
+}
+.informacoesCarrinho {
+  background: transparent;
+  width: 400px;
+}
+
+.informacoesCarrinho .superior > * {
+  flex: 1 1 auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin-bottom: 1rem;
+}
+
 .informacoesCarrinho .inferior {
   display: flex;
   justify-content: space-between;
@@ -79,7 +102,7 @@
 .informacoesCarrinho .inferior .diminuir:hover,
 .informacoesCarrinho .inferior .aumentar:hover,
 .inferior .lixeira:hover {
-  background-color: #492F60;
+  background-color: #492f60;
   transform: scale(1.1);
 }
 .descontos {
@@ -113,11 +136,11 @@
 }
 .finalizacaoCarrinho button {
   padding: 15px;
-  margin: 20px;
+  margin: 10px;
   width: 300px;
   border-radius: 20px;
   border: none;
-  background-color: #492F60;
+  background-color: #492f60;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -134,26 +157,10 @@
 .descontoscalculados {
   background-color: transparent;
 }
-.voltarprodutos {
-  padding: 15px;
-  border-radius: 20px;
-  border: none;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  background-color: #765691;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-.voltarprodutos:hover {
-  background-color: #492F60;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 .carrinho h1 {
-  margin: 40px;
+  color: #492f60;
 }
-.inferior{
+.inferior {
   width: 100%;
 }
 .inferior .botoes {
@@ -173,10 +180,30 @@
   text-align: center;
   padding: 10px;
 }
+.leiaMais {
+  width: 100px;
+  padding: 5px;
+  background-color: #765691;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.leiaMais:hover {
+  background-color: #492f60;
+  transform: scale(1.1);
+}
+.leiaMais img {
+  width: 10px;
+  height: 10px;
+}
 
 @media (max-width: 1024px) {
   .produtoCarrinho {
     flex-direction: column;
+    padding: 15px;
     width: 90%;
     align-items: center;
   }
@@ -190,5 +217,19 @@
   .carrinhoPrincipal {
     justify-content: center;
     gap: 20px;
+  }
+  .leiaMais {
+    width: 100px;
+    padding: 5px;
+    background-color: #765691;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .leiaMais img {
+    width: 10px;
+    height: 10px;
   }
 }

@@ -1,9 +1,12 @@
+.header{
+  margin-bottom: 20px;
+}
 .navbar-container{
     display: flex;
     justify-content: space-between;
     padding-left: 20px;
+    flex-wrap: wrap;
     padding-right: 20px;
-    height: 70px;
     background-color: #765691;
   }
   .navbar-container .esquerda{
@@ -95,6 +98,13 @@
     align-items: center; /* Centraliza verticalmente */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
   }
+  .navbarMobile{
+    display: none;
+    background-color: #492F60;
+    flex-wrap: wrap;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  }
   
   .navbar ul {
     list-style: none;
@@ -104,27 +114,38 @@
     margin: 0;
     padding: 0;
   }
+  .navbarMobile ul{
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px; /* Espaçamento uniforme entre os itens */
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    text-align: center;
+  }
   
   .navbar ul li {
     margin: 0;
+
   }
   
-  .navbar ul li a {
-    text-decoration: none; /* Remove o sublinhado */
-    font-size: 16px; /* Tamanho da fonte */
-    color: white; /* Cor do texto */
+  .navbarMobile ul li a, .navbar ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: white; 
     padding: 10px 15px;
     border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s; /* Efeito suave ao interagir */
+    transition: background-color 0.3s, color 0.3s;
   }
   
   .navbar ul li a:hover {
-    background-color: #5B4380; /* Cor de fundo ao passar o mouse */
+    background-color: #5B4380;
     color: white;
   }
   
   .navbar ul li a.active {
-    background-color: #2e7031; /* Cor para o item ativo */
+    background-color: #2e7031; 
     color: white;
   }
   .logo img{
@@ -144,9 +165,71 @@
     border: none;
     margin-right: 5px;
     background-color: white;
-    transition: background-color 0.3s, transform 0.3s; /* Adicionando uma transição suave */
+    transition: background-color 0.3s, transform 0.3s;
   }
   .userbutton:hover, .carrinhobutton:hover, .pincelbutton:hover{
-    background-color: #492F60; /* Cor do fundo quando o botão é hover */
+    background-color: #492F60;
     transform: scale(1.05);
   }
+  .hamburguer{
+    display: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .hamburguer:hover {
+    transform: scale(1.3);
+    filter: brightness(1.2);
+    cursor: pointer;
+  }
+
+  .cart-count {
+    position: absolute;
+    top: 5px; 
+    right: 5px;
+    background-color: red; 
+    color: white;
+    border-radius: 50%; 
+    width: 20px;
+    height: 20px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+
+  @media (max-width: 1024px) {
+    .navbarMobile{
+      display: flex;
+    }
+    .header .navbar{
+      display: none;
+    }
+    .hamburguer{
+      display: flex;
+    }
+    .actions button{
+      display: none;
+    }
+
+  }
+  @media (max-width: 700px) {
+    
+  .navbar-container{
+    height: 150px;
+  }
+  .navbar-container .esquerda{
+    width: 100%;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+  }
+  .navbar-container .direita{
+    width: 100%;
+    justify-content: center;
+  }
+
+}
+  
+  

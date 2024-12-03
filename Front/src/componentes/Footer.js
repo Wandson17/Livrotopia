@@ -15,7 +15,7 @@ const Footer = () => {
         <img src={linkdinIcon} alt="Ícone do linkdin"></img>
       </div>
       <div>
-        <p class="negrito">
+        <p className="negrito">
           &copy; 2024 Livrotopia - Todos os direitos reservados
         </p>
         <p>
@@ -44,7 +44,7 @@ const Footer = () => {
         </p>
       </div>
       <div>
-        <p class="negrito">
+        <p className="negrito">
           &copy; 2024 Livrotopia - Todos os direitos reservados
         </p>
         <p>
