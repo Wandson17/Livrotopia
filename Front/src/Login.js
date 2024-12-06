@@ -29,7 +29,7 @@ export default function Login({ onLoginSuccess, onCadastroRedirect }) {
       }
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.mensagem || "Erro no login. Tente novamente.");
+        alert(error.response.data.mensagem || "O cadastro não foi encontrado");
       } else {
         console.error(error);
         alert("Erro ao conectar ao servidor.");

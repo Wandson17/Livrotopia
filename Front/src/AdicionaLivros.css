@@ -155,9 +155,9 @@ header{
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  word-wrap: break-word; /* Quebra automaticamente palavras longas */
-  overflow-wrap: break-word; /* Suporte adicional para navegadores modernos */
-  word-break: break-word; /* Garante a quebra em palavras grandes */
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+  word-break: break-word; 
 }
 
 .card-cadastrados .informacoes .valor {
@@ -200,6 +200,11 @@ header{
 }
 .Adiciona h1{
   color: #492F60;
+}
+
+.preview-image {
+  height: 310px;
+  width: 220px;
 }
 
 @media (max-width: 1000px) {

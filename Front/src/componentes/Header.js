@@ -1,7 +1,7 @@
-import React from "react";
-import { useCarrinho } from "../CarrinhoContext";
-
-import "./Header.css";
+import React, { useState } from "react";
+import {useCarrinho} from "../CarrinhoContext";
+import "./Header.css"; 
+import menu from "../imgs/menu.png";
 import logo from "../imgs/logo-livrotopia.png";
 import lupa from "../imgs/lupa.png";
 import user from "../imgs/user.png";
@@ -16,8 +16,14 @@ const Header = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
-  onVoltar,
+  onVoltar
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
   const { carrinho } = useCarrinho();
 
   const quantidadeTotal = carrinho.reduce(
@@ -29,13 +35,14 @@ const Header = ({
     <header className="header">
       <div className="navbar-container">
         <div className="esquerda">
+          <img 
+            className="hamburguer" 
+            src={menu} 
+            alt="Menu" 
+            onClick={toggleMenu} 
+          />
           <div className="logo">
-            <img
-              src={logo}
-              onClick={onVoltar}
-              style={{ cursor: "pointer" }}
-              alt="Logo Livrotopia"
-            />
+            <img src={logo} alt="Logo Livrotopia" onClick={onVoltar} style={{cursor: "pointer"}}/>
           </div>
         </div>
         <div className="direita">
@@ -65,14 +72,14 @@ const Header = ({
                     onClick={onCarrinhoRedirect}
                     style={{ position: "relative" }}
                   >
-                    <img
-                      src={carrinhoImage}
-                      alt="Carrinho de compras"
-                      className="cart-icon"
-                    />
-                    {quantidadeTotal > 0 && (
-                      <span className="cart-count">{quantidadeTotal}</span>
-                    )}
+                  <img
+                    src={carrinhoImage}
+                    alt="Carrinho de compras"
+                    className="cart-icon"
+                  />
+                  {quantidadeTotal > 0 && (
+                    <span className="cart-count">{quantidadeTotal}</span>
+                  )}
                   </button>
                 )}
                 <button className="userbutton" onClick={onPerfilRedirect}>
@@ -94,19 +101,52 @@ const Header = ({
       </div>
       <nav className="navbar">
         <ul>
-        {/* eslint-disable jsx-a11y/anchor-is-valid */}
-          <li><a href="#">LIVROS</a></li>
-          <li><a href="#">CATEQUESE</a></li>
-          <li><a href="#">SAZONAIS</a></li>
-          <li><a href="#">ARTIGOS</a></li>
-          <li><a href="#">RELIGIOSOS</a></li>
-          <li><a href="#">AUTORES</a></li>
-          <li><a href="#">COLEÇÕES</a></li>
-          <li><a href="#">SELOS</a></li>
+          {/* eslint-disable-next-line */}
+          <li><a href="#">FICÇÃO</a></li>
+          <li><a href="#">AVENTURA</a></li>
+          <li><a href="#">TERROR</a></li>
+          <li><a href="#">ROMANCE</a></li>
+          <li><a href="#">DRAMA</a></li>
+          <li><a href="#">COMÉDIA</a></li>
+          <li><a href="#">BIOGRAFIA</a></li>
+          <li><a href="#">INFANTIS</a></li>
           <li><a href="#">E-BOOKS</a></li>
           <li><a href="#">REVISTAS</a></li>
         </ul>
       </nav>
+      {isMenuOpen && (
+        <nav className="navbarMobile">
+          <ul>
+            {isAuthenticated ? (
+              <>
+                
+                {isAdmin ? (
+                  <li><a href="#" onClick={onAdicionarLivrosRedirect}>ADICIONAR LIVROS</a></li>
+                ) : (
+                  <li><a href="#" onClick={onCarrinhoRedirect}>CARRINHO</a></li>
+                )}
+                <li><a href="#" onClick={onPerfilRedirect}>PERFIL</a></li>
+              </>
+            ) : (
+              <>
+                <li><a href="#" onClick={onLoginRedirect}>LOGIN</a></li>
+                <li><a href="#" onClick={onCadastroRedirect}>CADASTRO</a></li>
+              </>
+            )}
+            {/* eslint-disable-next-line */}
+            <li><a href="#">FICÇÃO</a></li>
+            <li><a href="#">AVENTURA</a></li>
+            <li><a href="#">TERROR</a></li>
+            <li><a href="#">ROMANCE</a></li>
+            <li><a href="#">DRAMA</a></li>
+            <li><a href="#">COMÉDIA</a></li>
+            <li><a href="#">BIOGRAFIA</a></li>
+            <li><a href="#">INFANTIS</a></li>
+            <li><a href="#">E-BOOKS</a></li>
+            <li><a href="#">REVISTAS</a></li>
+          </ul>
+        </nav>
+      )}
     </header>
   );
 };

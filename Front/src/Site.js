@@ -14,6 +14,7 @@ const Site = ({
   onCarrinhoRedirect,
   onPerfilRedirect,
   onProdutoRedirect,
+  handleVoltarPaginaInicial,
 }) => {
   const { isAuthenticated, isAdmin } = useAuth();
   const { adicionarProduto, selecionarProduto } = useCarrinho();
@@ -25,7 +26,6 @@ const Site = ({
       setLivros(response.data);
     } catch (error) {
       console.error("Erro ao buscar livros:", error);
-      alert("Erro ao carregar a lista de livros. Tente novamente mais tarde.");
     }
   };
 
@@ -57,6 +57,7 @@ const Site = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
+        onVoltar={handleVoltarPaginaInicial}
       />
       <Livros
         livros={livros}

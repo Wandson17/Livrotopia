@@ -12,21 +12,16 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
   const [imagemAtual, setImagemAtual] = useState(0);
 
   const proximaImagem = () => {
-    setTimeout(() => {
-      setImagemAtual((prev) => (prev + 1) % imagens.length);
-    }, 50);
+    setImagemAtual((prev) => (prev + 1) % imagens.length);
   };
 
   const imagemAnterior = () => {
-    setTimeout(() => {
-      setImagemAtual((prev) => (prev - 1 + imagens.length) % imagens.length);
-    }, 50);
+    setImagemAtual((prev) => (prev - 1 + imagens.length) % imagens.length);
   };
 
   return (
     <div className="Livros">
       <div className="conteudo">
-        {/* Carrossel de Anúncios */}
         <div
           className="carrosel"
           style={{ backgroundImage: `url(${imagens[imagemAtual]})` }}
@@ -48,8 +43,7 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
             <img className="seta" src={setaDireita} alt="Ícone de seta Direita" />
           </div>
         </div>
-
-        {/* Seção de Livros Populares */}
+        
         <div>
           <h3>Mais populares</h3>
         </div>
@@ -58,9 +52,9 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
             livros.map((livro) => (
               <div key={livro.id} className="card">
                 <img
-                  src={`http://localhost:8000/${livro.capa}`} // A URL da imagem é montada com o caminho retornado pela API
-                  alt="Capa do livro"
-                  onError={(e) => (e.target.src = capaPadrao)} // Caso não haja imagem, usa uma imagem padrão
+                  src={livro.capa || capaPadrao} 
+                  alt={`Capa do livro ${livro.titulo}`}
+                  onError={(e) => (e.target.src = capaPadrao)}
                 />
                 <h4 onClick={() => onVermais(livro)} style={{ cursor: "pointer" }}>
                   {livro.titulo}

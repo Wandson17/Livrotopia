@@ -16,6 +16,7 @@ const Produto = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
+  handleVoltarPaginaInicial,
 }) => {
   const { livroSelecionado, adicionarProduto } = useCarrinho();
   const { isAuthenticated, isAdmin, usuarioLogado } = useAuth();
@@ -24,7 +25,7 @@ const Produto = ({
   const [titulo, setTitulo] = useState("");
   const [corpo, setCorpo] = useState("");
   const [nota, setNota] = useState(1);
-  const [hoverNota, setHoverNota] = useState(null); // Estado para hover
+  const [hoverNota, setHoverNota] = useState(null);
   const [editandoIndex, setEditandoIndex] = useState(null);
 
   useEffect(() => {
@@ -117,91 +118,81 @@ const Produto = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
+        onVoltar={handleVoltarPaginaInicial}
       />
       <div className="container">
         <main>
           <section className="product-section">
-            <div className="product">
-              <div className="product-image">
-                <img
-                  src={capa}
-                  alt={`Capa do livro: ${livroSelecionado.titulo}`}
-                />
-              </div>
-              <div className="product-info">
-                <h1 className="product-title">{livroSelecionado.titulo}</h1>
-                <p className="product-author">
-                  Autor: {livroSelecionado.autor}
+          <div className="product">
+            <div className="product-image">
+              <img
+                src={livroSelecionado.capa ? livroSelecionado.capa : capa}
+                alt={`Capa do livro: ${livroSelecionado.titulo}`}
+                onError={(e) => (e.target.src = capa)}
+              />
+            </div>
+            <div className="product-info">
+              <h1 className="product-title">{livroSelecionado.titulo}</h1>
+              <p className="product-author">Autor: {livroSelecionado.autor}</p>
+              <p className="product-genre">Gênero: {livroSelecionado.genero}</p>
+              <p className="product-year">Ano: {livroSelecionado.anoLancamento}</p>
+              <p className="product-description">{livroSelecionado.descricao}</p>
+              <div className="average-rating">
+                <p>
+                  Avaliação: {calcularMediaNotas()}{" "}
+                  {calcularMediaNotas() > 0 ? "de 5.0" : "Nenhuma avaliação ainda"}
                 </p>
-                <p className="product-genre">
-                  Gênero: {livroSelecionado.genero}
-                </p>
-                <p className="product-year">
-                  Ano: {livroSelecionado.anoLancamento}
-                </p>
-                <p className="product-description">
-                  {livroSelecionado.descricao}
-                </p>
-                <div className="average-rating">
-                  <p>
-                    Avaliação: {calcularMediaNotas()}{" "}
-                    {calcularMediaNotas() > 0
-                      ? "de 5.0"
-                      : "Nenhuma avaliação ainda"}
-                  </p>
-                  <div className="estrelas">
-                    {[...Array(5)].map((_, index) => {
-                      // Verifica a parte inteira e decimal da média
-                      const rating = calcularMediaNotas();
-                      const fullStars = Math.floor(rating); // Quantidade de estrelas cheias
-                      const halfStar = rating % 1 >= 0.5; // Verifica se deve mostrar estrela pela metade
+                <div className="estrelas">
+                  {[...Array(5)].map((_, index) => {
+                    const rating = calcularMediaNotas();
+                    const fullStars = Math.floor(rating);
+                    const halfStar = rating % 1 >= 0.5;
 
-                      // Exibe a estrela cheia, pela metade ou vazia
-                      if (index < fullStars) {
-                        return (
-                          <img
-                            key={index}
-                            src={estrelacompleta}
-                            alt="Estrela cheia"
-                            className="estrela"
-                          />
-                        );
-                      } else if (index === fullStars && halfStar) {
-                        return (
-                          <img
-                            key={index}
-                            src={estrelametade}
-                            alt="Estrela pela metade"
-                            className="estrela"
-                          />
-                        );
-                      } else {
-                        return (
-                          <img
-                            key={index}
-                            src={estrela}
-                            alt="Estrela vazia"
-                            className="estrela"
-                          />
-                        );
-                      }
-                    })}
-                  </div>
+                    if (index < fullStars) {
+                      return (
+                        <img
+                          key={index}
+                          src={estrelacompleta}
+                          alt="Estrela cheia"
+                          className="estrela"
+                        />
+                      );
+                    } else if (index === fullStars && halfStar) {
+                      return (
+                        <img
+                          key={index}
+                          src={estrelametade}
+                          alt="Estrela pela metade"
+                          className="estrela"
+                        />
+                      );
+                    } else {
+                      return (
+                        <img
+                          key={index}
+                          src={estrela}
+                          alt="Estrela vazia"
+                          className="estrela"
+                        />
+                      );
+                    }
+                  })}
                 </div>
               </div>
-              <div className="product-pricing">
-                <p className="price">
-                  Preço: R$ {livroSelecionado.preco.toFixed(2)}
-                </p>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => adicionarProduto(livroSelecionado)}
-                >
-                  Adicionar ao Carrinho
-                </button>
-                <button className="btn btn-secondary">Comprar Agora</button>
-              </div>
             </div>
+            <div className="product-pricing">
+              <p className="price">
+                Preço: R$ {livroSelecionado.preco.toFixed(2)}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() => adicionarProduto(livroSelecionado)}
+              >
+                Adicionar ao Carrinho
+              </button>
+              <button className="btn btn-secondary">Comprar Agora</button>
+            </div>
+          </div>
           </section>
 
           <section className="feedback-section">

@@ -3,7 +3,6 @@ import axios from "axios";
 import "./AdicionaLivros.css";
 import Footer from "./componentes/Footer";
 import Header from "./componentes/Header";
-// import {Image} from "cloudinary-react";
 
 const AdicionaLivros = ({
   onVoltar,
@@ -12,6 +11,7 @@ const AdicionaLivros = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
+  handleVoltarPaginaInicial,
 }) => {
   const [livros, setLivros] = useState([]);
   const [titulo, setTitulo] = useState("");
@@ -20,9 +20,8 @@ const AdicionaLivros = ({
   const [descricao, setDescricao] = useState("");
   const [anoLancamento, setAnoLancamento] = useState("");
   const [preco, setPreco] = useState("");
-
-  const [imageSelected, setImageSelected] = useState("");
-
+  const [imageSelected, setImageSelected] = useState(null);
+  const [previewImage, setPreviewImage] = useState("");
   const [editando, setEditando] = useState(false);
   const [idEditando, setIdEditando] = useState(null);
 
@@ -39,19 +38,22 @@ const AdicionaLivros = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const formData = new FormData();
-      formData.append("file", imageSelected);
-      formData.append("upload_preset", "livrotopia");
-  
-      const uploadResponse = await axios.post(
-        "https://api.cloudinary.com/v1_1/dqyjzmn3s/image/upload",
-        formData
-      );
-  
-      const imageUrl = uploadResponse.data.secure_url; 
-  
+      let imageUrl = previewImage;
+
+      if (imageSelected) {
+        const formData = new FormData();
+        formData.append("file", imageSelected);
+        formData.append("upload_preset", "livrotopia");
+
+        const uploadResponse = await axios.post(
+          "https://api.cloudinary.com/v1_1/dqyjzmn3s/image/upload",
+          formData
+        );
+        imageUrl = uploadResponse.data.secure_url;
+      }
+
       const livroData = {
         titulo,
         autor,
@@ -59,15 +61,15 @@ const AdicionaLivros = ({
         descricao,
         anoLancamento,
         preco,
-        capa: imageUrl,
+        capa: imageUrl
       };
-  
-      if (editando) {
+
+      if (editando && idEditando) {
         await axios.put(`${apiUrl}/${idEditando}`, livroData);
       } else {
         await axios.post(apiUrl, livroData);
       }
-  
+
       fetchLivros();
       resetForm();
     } catch (error) {
@@ -91,6 +93,7 @@ const AdicionaLivros = ({
     setDescricao(livro.descricao);
     setAnoLancamento(livro.anoLancamento);
     setPreco(livro.preco);
+    setPreviewImage(livro.capa);
     setEditando(true);
     setIdEditando(livro.id);
   };
@@ -102,14 +105,26 @@ const AdicionaLivros = ({
     setDescricao("");
     setAnoLancamento("");
     setPreco("");
+    setImageSelected(null);
+    setPreviewImage("");
     setEditando(false);
     setIdEditando(null);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageSelected(file);
+    setPreviewImage(URL.createObjectURL(file));
+  };
+
+  const removeImage = () => {
+    setImageSelected(null);
+    setPreviewImage("");
   };
 
   useEffect(() => {
     fetchLivros();
   }, []);
-
 
   return (
     <div className="Adiciona">
@@ -121,6 +136,7 @@ const AdicionaLivros = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
+        onVoltar={handleVoltarPaginaInicial}
       />
       <h1>Cadastro de livros</h1>
       <form onSubmit={handleSubmit} className="cadastro">
@@ -171,26 +187,33 @@ const AdicionaLivros = ({
               required
             />
           </div>
-          {/* ========== input da imagem fica aquiiii ========== */}
           <div className="topo3">
-            <input
-              type="file"
-              id="imagem-upload"
-              className="imagem"
-              onChange={(e)=> {
-                setImageSelected(e.target.files[0]);
-              }}
-            />
-            <label htmlFor="imagem-upload" className="imagem-label"></label>
-            <p>Insira a capa do livro</p>
-            {/* =============================================== */}
+            {previewImage ? (
+              <div className="preview-container">
+                <img src={previewImage} alt="Preview da capa" className="preview-image" />
+                <button type="button" onClick={removeImage}>
+                  Remover Imagem
+                </button>
+              </div>
+            ) : (
+              <>
+                <input
+                  type="file"
+                  id="imagem-upload"
+                  className="imagem"
+                  onChange={handleImageChange}
+                />
+                <label htmlFor="imagem-upload" className="imagem-label"></label>
+                <p>Insira a capa do livro</p>
+              </>
+            )}
           </div>
         </div>
         <div className="baixo">
           <button type="submit">
             {editando ? "Salvar Alterações" : "Cadastrar Livro"}
           </button>
-          <button onClick={onVoltar}>
+          <button type="button" onClick={onVoltar}>
             Voltar para a página inicial
           </button>
         </div>
@@ -200,15 +223,11 @@ const AdicionaLivros = ({
         {livros.map((livro) => (
           <div className="card-cadastrados" key={livro.id}>
             <div className="capa">
-            {livro.capa ? (
-              <img src={livro.capa} alt={`Capa do livro ${livro.titulo}`} />
+              {livro.capa ? (
+                <img src={livro.capa} alt={`Capa do livro ${livro.titulo}`} />
               ) : (
                 <p>Sem capa disponível</p>
               )}
-              {/* <Image 
-                cloudName="dqyjzmn3s" 
-                publicId="https://res.cloudinary.com/dqyjzmn3s/image/upload/v1733178457/cqartvy5mi5xmpil44va.jpg"
-              /> */}
             </div>
             <div className="informacoes">
               <h2>{livro.titulo}</h2>

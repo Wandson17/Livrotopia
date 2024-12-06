@@ -9,12 +9,11 @@ import AdicionaLivros from "./AdicionaLivros";
 import Perfil from "./Perfil";
 import FinalizarCompra from "./FinalizarCompra";
 import Produto from "./Produto";
-// import Header from "./componentes/Header";
+import Header from "./componentes/Header";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("site");
 
-  // Funções de navegação
   const handleLoginRedirect = () => setCurrentPage("login");
   const handleCadastroRedirect = () => setCurrentPage("cadastro");
   const handleLoginSuccess = () => setCurrentPage("site");
@@ -103,11 +102,11 @@ function App() {
             onCarrinhoRedirect={handleCarrinhoRedirect}
             onPerfilRedirect={handlePerfilRedirect} />
           )}
-          {/* {currentPage === "header" && (
+          {currentPage === "header" && (
             <Header 
             onVoltar={handleVoltarPaginaInicial}
             />
-          )} */}
+          )}
         </div>
       </CarrinhoProvider>
     </AuthProvider>
