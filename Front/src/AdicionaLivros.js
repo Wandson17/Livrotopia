@@ -11,7 +11,6 @@ const AdicionaLivros = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
-  handleVoltarPaginaInicial,
 }) => {
   const [livros, setLivros] = useState([]);
   const [titulo, setTitulo] = useState("");
@@ -52,6 +51,11 @@ const AdicionaLivros = ({
           formData
         );
         imageUrl = uploadResponse.data.secure_url;
+      }
+
+      if (!imageUrl) {
+        imageUrl =
+          "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
       }
 
       const livroData = {
@@ -136,7 +140,7 @@ const AdicionaLivros = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
-        onVoltar={handleVoltarPaginaInicial}
+        onVoltar={onVoltar}
       />
       <h1>Cadastro de livros</h1>
       <form onSubmit={handleSubmit} className="cadastro">
@@ -191,7 +195,7 @@ const AdicionaLivros = ({
             {previewImage ? (
               <div className="preview-container">
                 <img src={previewImage} alt="Preview da capa" className="preview-image" />
-                <button type="button" onClick={removeImage}>
+                <button type="button" onClick={removeImage} className="removeImage">
                   Remover Imagem
                 </button>
               </div>

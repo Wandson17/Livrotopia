@@ -199,6 +199,21 @@
   width: 10px;
   height: 10px;
 }
+.opcoesPagamento {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.opcoesPagamento label {
+  font-weight: bold;
+}
+.opcoesPagamento select option:hover {
+  background-color: #492f60;
+}
 
 @media (max-width: 1024px) {
   .produtoCarrinho {

@@ -16,7 +16,6 @@ const Produto = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
-  handleVoltarPaginaInicial,
 }) => {
   const { livroSelecionado, adicionarProduto } = useCarrinho();
   const { isAuthenticated, isAdmin, usuarioLogado } = useAuth();
@@ -108,6 +107,7 @@ const Produto = ({
     setAvaliacoes(novasAvaliacoes);
   };
 
+
   return (
     <div>
       <Header
@@ -118,7 +118,7 @@ const Produto = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
-        onVoltar={handleVoltarPaginaInicial}
+        onVoltar={onVoltar}
       />
       <div className="container">
         <main>
@@ -187,10 +187,11 @@ const Produto = ({
               <button
                 className="btn btn-primary"
                 onClick={() => adicionarProduto(livroSelecionado)}
-              >
-                Adicionar ao Carrinho
-              </button>
-              <button className="btn btn-secondary">Comprar Agora</button>
+              > Adicionar ao Carrinho </button>
+              <button 
+                className="btn btn-secondary"
+                onClick={onCarrinhoRedirect}
+              > Comprar Agora</button>
             </div>
           </div>
           </section>

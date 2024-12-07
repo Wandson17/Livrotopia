@@ -11,7 +11,6 @@ const Perfil = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
-  handleVoltarPaginaInicial,
 }) => {
   const { logout, usuarioLogado } = useAuth();
   const { isAuthenticated, isAdmin } = useAuth();
@@ -26,14 +25,16 @@ const Perfil = ({
   const [editando, setEditando] = useState(false);
 
   useEffect(() => {
-    // Carrega dados do localStorage e do usuário logado
     if (usuarioLogado) {
+      const userKey = `user_${usuarioLogado.id || usuarioLogado.email}`; // Usa ID ou email como chave única
+      const savedData = JSON.parse(localStorage.getItem(userKey)) || {};
+
       setFormData({
         nome: usuarioLogado.nome || "",
         email: usuarioLogado.email || "",
-        telefone: localStorage.getItem("telefone") || "",
-        cep: localStorage.getItem("cep") || "",
-        endereco: localStorage.getItem("endereco") || "",
+        telefone: savedData.telefone || "",
+        cep: savedData.cep || "",
+        endereco: savedData.endereco || "",
       });
     }
   }, [usuarioLogado]);
@@ -46,13 +47,22 @@ const Perfil = ({
   const salvarAlteracoes = (e) => {
     e.preventDefault();
 
-    // Salva os dados no localStorage
-    localStorage.setItem("telefone", formData.telefone);
-    localStorage.setItem("cep", formData.cep);
-    localStorage.setItem("endereco", formData.endereco);
+    if (usuarioLogado) {
+      const userKey = `user_${usuarioLogado.id || usuarioLogado.email}`; // Usa ID ou email como chave única
+      localStorage.setItem(
+        userKey,
+        JSON.stringify({
+          telefone: formData.telefone,
+          cep: formData.cep,
+          endereco: formData.endereco,
+        })
+      );
 
-    alert("Informações atualizadas com sucesso!");
-    setEditando(false);
+      alert("Informações atualizadas com sucesso!");
+      setEditando(false);
+    } else {
+      alert("Erro ao salvar alterações: Usuário não está logado.");
+    }
   };
 
   return (
@@ -65,7 +75,7 @@ const Perfil = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
-        onVoltar={handleVoltarPaginaInicial}
+        onVoltar={onVoltar}
       />
       <h1 className="profile-title">Perfil</h1>
       <main className="profile-container">
@@ -78,7 +88,7 @@ const Perfil = ({
           </div>
           <h2>{formData.nome || "Usuário"}</h2>
           <button onClick={() => setEditando(true)}>Editar Dados</button>
-          <button>Minhas Compras</button>
+          <button>Editar foto de perfil</button>
           <button
             onClick={() => {
               logout();
@@ -87,7 +97,6 @@ const Perfil = ({
           >
             Sair
           </button>
-          <button onClick={onVoltar}>Voltar</button>
         </div>
 
         <div className="right-section">
@@ -108,6 +117,7 @@ const Perfil = ({
                       placeholder={
                         field.charAt(0).toUpperCase() + field.slice(1)
                       }
+                      disabled={field === "nome" || field === "email"}
                     />
                   </div>
                 </div>

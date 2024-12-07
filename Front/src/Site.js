@@ -8,13 +8,13 @@ import Header from "./componentes/Header";
 import axios from "axios";
 
 const Site = ({
+  onVoltar,
   onLoginRedirect,
   onCadastroRedirect,
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
   onProdutoRedirect,
-  handleVoltarPaginaInicial,
 }) => {
   const { isAuthenticated, isAdmin } = useAuth();
   const { adicionarProduto, selecionarProduto } = useCarrinho();
@@ -57,7 +57,7 @@ const Site = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
-        onVoltar={handleVoltarPaginaInicial}
+        onVoltar={onVoltar}
       />
       <Livros
         livros={livros}

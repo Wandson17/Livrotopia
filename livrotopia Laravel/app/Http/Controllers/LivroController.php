@@ -32,7 +32,7 @@ class LivroController extends Controller
         $descricao = $request->input('descricao');
         $anoLancamento = $request->input('anoLancamento');
         $preco = $request->input('preco');
-        $capa = $request->input('capa');
+        $capa = $request->input('capa') ?? 'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg';
 
 
         $p = Livro::create(['titulo' => $titulo, 'autor' => $autor, 'genero' => $genero,
@@ -84,9 +84,9 @@ class LivroController extends Controller
         $preco = request()->input('preco');
         if ($preco)
             $livro->preco = $preco;
-        $capa = request()->input('capa');
-        if ($capa)
-            $livro->capa = $capa;
+        $capa = request()->input('capa') ?? 
+            $livro->capa = $preco ?? 'https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg';
+    
         
         $livro->save();
     }

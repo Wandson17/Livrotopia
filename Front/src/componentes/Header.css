@@ -149,8 +149,10 @@
     color: white;
   }
   .logo img{
-    width: 170px;
+    margin-top: 5px;
+    width: 160px;
     height: 60px;
+    cursor: pointer;
   }
   .cart-icon, .user-icon, .pincel-icon{
     padding: 5px;

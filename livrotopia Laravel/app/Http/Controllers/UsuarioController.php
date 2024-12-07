@@ -46,7 +46,6 @@ class UsuarioController extends Controller
         return $usuario;
     }
 
-    // Atualizar um usuário (opcional)
     public function update(Request $request, Usuario $usuario)
     {
         $nome = request()->input('nome');
@@ -62,14 +61,12 @@ class UsuarioController extends Controller
         $usuario->save();
     }
 
-    // Deletar um usuário
     public function destroy(Usuario $usuario)
     {
         $usuario->delete();
 
     }
 
-    // Autenticar um usuário
     public function login(Request $request)
     {
         $usuario = Usuario::where('email', $request->input('email'))->first();

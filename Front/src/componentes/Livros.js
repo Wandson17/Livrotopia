@@ -5,7 +5,6 @@ import setaDireita from "../imgs/seta-direita.png";
 import anuncio1 from "../imgs/anuncio1.jpg";
 import anuncio2 from "../imgs/anuncio2.jpg";
 import anuncio3 from "../imgs/anuncio3.jpg";
-import capaPadrao from "../imgs/capaPadrao.jpeg";
 
 const Livros = ({ livros, onAdicionar, onVermais }) => {
   const imagens = [anuncio1, anuncio2, anuncio3];
@@ -52,9 +51,9 @@ const Livros = ({ livros, onAdicionar, onVermais }) => {
             livros.map((livro) => (
               <div key={livro.id} className="card">
                 <img
-                  src={livro.capa || capaPadrao} 
+                  src={livro.capa || "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg"} 
                   alt={`Capa do livro ${livro.titulo}`}
-                  onError={(e) => (e.target.src = capaPadrao)}
+                  onError={(e) => (e.target.src = "https://static.vecteezy.com/system/resources/previews/004/141/669/non_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg")}
                 />
                 <h4 onClick={() => onVermais(livro)} style={{ cursor: "pointer" }}>
                   {livro.titulo}

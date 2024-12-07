@@ -18,7 +18,8 @@ const Carrinho = ({
   onAdicionarLivrosRedirect,
   onCarrinhoRedirect,
   onPerfilRedirect,
-  handleVoltarPaginaInicial,
+  onPixRedirect,
+  onBoletoRedirect,
 }) => {
   const {
     carrinho,
@@ -29,14 +30,32 @@ const Carrinho = ({
   } = useCarrinho();
   const { isAuthenticated, isAdmin } = useAuth();
 
-  const [expanded, setExpanded] = useState({});
+  const [expandir, setExpandir] = useState({});
+  const [opcaoPagamento, setOpcaoPagamento] = useState("");
 
-  const toggleDescription = (id) => {
-    setExpanded((prevState) => ({
+  const toggleDescricao = (id) => {
+    setExpandir((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
     }));
   };
+
+  const finalizarCompra = () => {
+    if (opcaoPagamento === "pix") {
+      onPixRedirect();
+    } else if (opcaoPagamento === "cartao") {
+      onFinalizarRedirect();
+    } else if (opcaoPagamento === "boleto") {
+      onBoletoRedirect();
+    }
+  };
+
+  const quantidadeTotal = (totalCarrinho, carrinho) => {
+    const quantidadeTotal = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
+    const textoProduto = quantidadeTotal === 1 ? "produto" : "produtos";
+    return `R$ ${totalCarrinho.toFixed(2)} (${quantidadeTotal} ${textoProduto})`;
+  };
+
 
   return (
     <div className="carrinho">
@@ -48,7 +67,7 @@ const Carrinho = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
-        onVoltar={handleVoltarPaginaInicial}
+        onVoltar={onVoltar}
       />
       <h1>Meu carrinho</h1>
       <div className="carrinhoPrincipal">
@@ -71,15 +90,15 @@ const Carrinho = ({
                     <p>{item.genero}</p>
                     <p>{item.ano}</p>
                     <p>
-                      {expanded[item.id]
+                      {expandir[item.id]
                         ? item.descricao
                         : `${item.descricao.slice(0, 100)}...`}
                     </p>
                     <button
-                      onClick={() => toggleDescription(item.id)}
+                      onClick={() => toggleDescricao(item.id)}
                       className="leiaMais"
                     >
-                      {expanded[item.id] ? "Leia Menos" : "Leia Mais"}
+                      {expandir[item.id] ? "Leia Menos" : "Leia Mais"}
                       <img src={setabaixo} alt="icone de seta para baixo"></img>
                     </button>
                   </div>
@@ -116,14 +135,28 @@ const Carrinho = ({
           <div className="descontos">
             <input placeholder="Código do Cupom" />
             <input placeholder="CEP" />
+            <p>Frete gratuito para todo o país</p>
           </div>
           <div className="descontoscalculados">
-            <p>Frete: R$ </p>
-            <p>Desconto: R$</p>
-            <p>Subtotal: R$</p>
-            <h2 className="total">Total: R$ {totalCarrinho.toFixed(2)}</h2>
+            <p>Desconto: R$0.00</p>
+            <p>Subtotal: R$ {totalCarrinho.toFixed(2)}</p>
+            <h2 className="total">Total: {quantidadeTotal(totalCarrinho, carrinho)}</h2>
+
+            <div className="opcoesPagamento">
+              <label htmlFor="opcoes">Escolha uma forma de pagamento:</label>
+              <select
+                id="opcoes"
+                name="opcoes"
+                onChange={(e) => setOpcaoPagamento(e.target.value)}
+              >
+                <option value="">Selecione</option>
+                <option value="pix">PIX</option>
+                <option value="boleto">Boleto</option>
+                <option value="cartao">Cartão</option>
+              </select>
+            </div>
             <div className="botaofinalizar">
-              <button onClick={onFinalizarRedirect}>Finalizar compra</button>
+              <button onClick={finalizarCompra}>Finalizar compra</button>
               <button onClick={onVoltar} className="voltarprodutos">
                 Voltar para produtos
               </button>

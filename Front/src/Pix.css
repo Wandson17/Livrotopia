@@ -1,0 +1,85 @@
+/* Pix.css */
+
+.pix-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #F0ECE2;
+    color: #333;
+    padding: 20px;
+  }
+
+  .pix-container h1 {
+    font-size: 36px;
+    color: #492f60;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  .pix-content {
+    background-color: #765691;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 50px;
+  }
+  
+  .pix-content p {
+    font-size: 18px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  .Aviso{
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
+  
+  .qr-code {
+    margin: 20px 0;
+  }
+  .qr-code img{
+    border-radius: 10px;
+  }
+  
+  .qr-code-img {
+    max-width: 100%;
+    height: auto;
+    width: 256px; 
+    margin: 0 auto;
+  }
+  
+  .pix-code {
+    font-family: monospace;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color:#210052;
+  }
+  
+  .pix-button {
+    padding: 15px;
+    margin: 5px;
+    width: 300px;
+    border-radius: 20px;
+    border: none;
+    background-color: #492f60;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .pix-button:hover {
+    background-color: #210052;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }

@@ -10,6 +10,8 @@ import Perfil from "./Perfil";
 import FinalizarCompra from "./FinalizarCompra";
 import Produto from "./Produto";
 import Header from "./componentes/Header";
+import Pix from "./Pix";
+import Boleto from "./Boleto";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("site");
@@ -24,6 +26,8 @@ function App() {
   const handleFinalizarCompraRedirect = () => setCurrentPage("finalizarCompra");
   const handleProdutoRedirect = () => setCurrentPage("produto");
   const handleAdicionarLivrosRedirect = () => setCurrentPage("adicionarLivros");
+  const handlePixRedirect = () => setCurrentPage("pix");
+  const handleBoletoRedirect = () => setCurrentPage("boleto");
 
   return (
     <AuthProvider>
@@ -31,6 +35,7 @@ function App() {
         <div>
           {currentPage === "site" && (
             <Site
+              onVoltar={handleVoltarPaginaInicial}
               onLoginRedirect={handleLoginRedirect}
               onCadastroRedirect={handleCadastroRedirect}
               onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
@@ -48,6 +53,8 @@ function App() {
               onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
               onCarrinhoRedirect={handleCarrinhoRedirect}
               onPerfilRedirect={handlePerfilRedirect}
+              onPixRedirect={handlePixRedirect}
+              onBoletoRedirect={handleBoletoRedirect}
             />
           )}
           {currentPage === "adicionarLivros" && (
@@ -94,17 +101,36 @@ function App() {
             />
           )}
           {currentPage === "produto" && (
-            <Produto 
-            onVoltar={handleVoltarPaginaInicial}
-            onLoginRedirect={handleLoginRedirect}
-            onCadastroRedirect={handleCadastroRedirect}
-            onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
-            onCarrinhoRedirect={handleCarrinhoRedirect}
-            onPerfilRedirect={handlePerfilRedirect} />
+            <Produto
+              onVoltar={handleVoltarPaginaInicial}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+            />
           )}
           {currentPage === "header" && (
-            <Header 
-            onVoltar={handleVoltarPaginaInicial}
+            <Header onVoltar={handleVoltarPaginaInicial} />
+          )}
+          {currentPage === "pix" && (
+            <Pix
+              onVoltar={handleVoltarPaginaInicial}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
+            />
+          )}
+          {currentPage === "boleto" && (
+            <Boleto
+              onVoltar={handleVoltarPaginaInicial}
+              onLoginRedirect={handleLoginRedirect}
+              onCadastroRedirect={handleCadastroRedirect}
+              onAdicionarLivrosRedirect={handleAdicionarLivrosRedirect}
+              onCarrinhoRedirect={handleCarrinhoRedirect}
+              onPerfilRedirect={handlePerfilRedirect}
             />
           )}
         </div>
@@ -114,7 +140,3 @@ function App() {
 }
 
 export default App;
-
-
-
-

@@ -4,6 +4,7 @@ import { useAuth } from "./AuthContext";
 import "./FinalizarCompra.css";
 import Header from "./componentes/Header";
 import Footer from "./componentes/Footer";
+import ModalCompraRealizada from "./componentes/ModalCompraRealizada";
 
 const FinalizarCompra = ({
   onVoltar,
@@ -20,6 +21,11 @@ const FinalizarCompra = ({
   const [cvv, setCvv] = useState("");
   const [compraFinalizada, setCompraFinalizada] = useState(false);
   const { isAuthenticated, isAdmin } = useAuth();
+  const [modalAberto, setModalAberto] = useState(false);
+
+  const finalizarCompra = () => {
+    setModalAberto(true);
+  };
 
   const handleFinalizarCompra = (e) => {
     e.preventDefault();
@@ -45,6 +51,7 @@ const FinalizarCompra = ({
         onAdicionarLivrosRedirect={onAdicionarLivrosRedirect}
         onCarrinhoRedirect={onCarrinhoRedirect}
         onPerfilRedirect={onPerfilRedirect}
+        onVoltar={onVoltar}
       />
       <div className="checkout-container">
         <div className="checkout-header">
@@ -75,11 +82,13 @@ const FinalizarCompra = ({
             <h2>Informações de Pagamento</h2>
             {compraFinalizada ? (
               <div>
-                <h3>Compra realizada com sucesso!</h3>
-                <p>Obrigado pela sua compra.</p>
                 <button onClick={onVoltar} className="btn-primary">
                   Voltar à Página Inicial
                 </button>
+                <ModalCompraRealizada
+                  isAberto={modalAberto}
+                  aoFechar={() => setModalAberto(false)}
+                />
               </div>
             ) : (
               <form className="form" onSubmit={handleFinalizarCompra}>
@@ -126,7 +135,11 @@ const FinalizarCompra = ({
                   </div>
                 </div>
                 <div className="botoes">
-                  <button type="submit" className="btn-primary">
+                  <button
+                    type="submit"
+                    onClick={finalizarCompra}
+                    className="btn-primary"
+                  >
                     Confirmar Compra
                   </button>
                   <button

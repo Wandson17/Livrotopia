@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('descricao');
             $table->integer('anoLancamento');
             $table->float('preco');
-            $table->string('capa');
-
+            $table->string('capa')->nullable();
         });
     }
 

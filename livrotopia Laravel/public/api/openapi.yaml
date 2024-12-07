@@ -1,8 +1,7 @@
 openapi: '3.0.1'
 info:
-  title: Livrotopia - Adicionar Livros
-  description:
-    Serviço de acesso exclusivo para admins do Livrotopia, permitindo a adição de novos livros ao catálogo de vendas no site.
+  title: Livrotopia API
+  description: API para gestão de livros e usuários no site Livrotopia.
   version: '0.1'
 servers:
   - url: http://{host}:{porta}/api
@@ -17,9 +16,31 @@ paths:
     get:
       summary: Listar livros disponíveis
       responses:
-        200:
-          description: OK
-    
+        '200':
+          description: Lista de livros
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    titulo:
+                      type: string
+                    autor:
+                      type: string
+                    genero:
+                      type: string
+                    descricao:
+                      type: string
+                    anoLancamento:
+                      type: integer
+                    preco:
+                      type: number
+                      format: float
+                    capa:
+                      type: string
+
     post:
       summary: Adicionar um novo livro
       requestBody:
@@ -56,13 +77,12 @@ paths:
                   example: 39.90
                 capa:
                   type: string
-                  description: A url da imagem
+                  description: A URL da imagem da capa do livro.
                   example: "https://livraria.deiaetiba.com.br/image/cache/data/api/produtos/10984-515x800.jpg?1686834710"
-        
       responses:
-        201:
-          description: Livro adicionado
-        400:
+        '201':
+          description: Livro criado com sucesso
+        '400':
           description: Requisição inválida
 
   /livros/{id}:
@@ -71,45 +91,38 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          type: integer
+
     get:
-      summary: Acessar um livro específico
+      summary: Obter detalhes de um livro específico
       responses:
-        200:
-          description: OK
+        '200':
+          description: Livro encontrado
           content:
             application/json:
               schema:
-                type: object  
+                type: object
                 properties:
                   titulo:
-                    type: string
-                  descricao:
                     type: string
                   autor:
                     type: string
                   genero:
                     type: string
-                  ano_lancamento:
+                  descricao:
+                    type: string
+                  anoLancamento:
                     type: integer
                   preco:
                     type: number
                     format: float
                   capa:
                     type: string
-        404:
-          description: Livro não encontrado.
-
-    delete:
-      summary: Remover um livro.
-      responses:
-        200:
-          description: Livro removido
-        404:
+        '404':
           description: Livro não encontrado
 
     put:
-      summary: Atualizar informações de um livro.
+      summary: Atualizar as informações de um livro
       requestBody:
         required: true
         content:
@@ -144,25 +157,77 @@ paths:
                   example: 39.90
                 capa:
                   type: string
-                  description: A url da imagem
+                  description: A URL da imagem da capa do livro.
                   example: "https://livraria.deiaetiba.com.br/image/cache/data/api/produtos/10984-515x800.jpg?1686834710"
-        
       responses:
-        200: 
-          description: Livro atualizado
-        404:
-          description: Livro não encontrado. 
+        '200':
+          description: Livro atualizado com sucesso
+        '404':
+          description: Livro não encontrado
+
+    delete:
+      summary: Remover um livro
+      responses:
+        '200':
+          description: Livro removido com sucesso
+        '404':
+          description: Livro não encontrado
 
   /usuarios:
-      get:
-        summary: Listar usuários cadastrados
-        responses:
-          200:
-            description: OK
-      post:
-        summary: Registrar um novo usuário
-        requestBody:
-          required: true
+    get:
+      summary: Listar usuários cadastrados
+      responses:
+        '200':
+          description: Lista de usuários
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nome:
+                      type: string
+                    email:
+                      type: string
+
+    post:
+      summary: Registrar um novo usuário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  example: "João Silva"
+                email:
+                  type: string
+                  example: "joao.silva@exemplo.com"
+                senha:
+                  type: string
+                  example: "senha123"
+      responses:
+        '201':
+          description: Usuário registrado com sucesso
+        '400':
+          description: Erro ao registrar usuário
+
+  /usuarios/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+
+    get:
+      summary: Obter detalhes de um usuário específico
+      responses:
+        '200':
+          description: Usuário encontrado
           content:
             application/json:
               schema:
@@ -174,15 +239,20 @@ paths:
                     type: string
                   senha:
                     type: string
-        responses:
-          200:
-            description: Usuário registrado com sucesso
-          400:
-            description: Erro ao registrar usuário
+        '404':
+          description: Usuário não encontrado
+
+    delete:
+      summary: Remover um usuário
+      responses:
+        '200':
+          description: Usuário removido com sucesso
+        '404':
+          description: Usuário não encontrado
 
   /usuarios/login:
     post:
-      summary: Fazer login do usuário
+      summary: Login do usuário
       requestBody:
         required: true
         content:
@@ -192,44 +262,12 @@ paths:
               properties:
                 email:
                   type: string
+                  example: "joao.silva@exemplo.com"
                 senha:
                   type: string
+                  example: "senha123"
       responses:
-        200:
+        '200':
           description: Login bem-sucedido
-        400:
+        '401':
           description: Credenciais inválidas
-  
-  /usuarios/{id}:
-    parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-    get:
-      summary: Acessar um usuario específico
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object  
-                properties:
-                  nome:
-                    type: string
-                  email:
-                    type: string
-                  senha:
-                    type: string
-        404:
-          description: Usuário não encontrado.
-
-    delete:
-      summary: Remover um usuário.
-      responses:
-        200:
-          description: Usuário removido
-        404:
-          description: Usuário não encontrado
